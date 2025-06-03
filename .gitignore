@@ -1,0 +1,38 @@
+# Node modules
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# MacOS files
+.DS_Store
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor directories and files
+.vscode/
+.idea/
+
+# Debug and coverage
+coverage/
+*.log
+
+# Static files and caches
+.cache/
+dist/
+build/
+
+# Docker-generated files (if any)
+docker-compose.override.yml
