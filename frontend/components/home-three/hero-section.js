@@ -11,47 +11,46 @@ export default function HeroSection() {
 					<div className="col-lg-7">
 						<div className="fugu--hero-content">
 							<h1 className="wow fadeInUpX" data-wow-delay="0s">
-								Discover the latest digital art and collect NFTs
+								Detecta fallas estructurales en segundos
 							</h1>
 							<p className="wow fadeInUpX" data-wow-delay="0.10s">
-								The largest NFT marketplace. We make NFTs easier and more efficient for culture and
-								creativity, built efficiently for you.
+								Sube una foto de tu edificio o muro y nuestro modelo de IA analizará y visualizará las posibles fallas estructurales.
 							</p>
 							<div className="fugu--btn-wrap fugu--hero-btn wow fadeInUpX" data-wow-delay="0.20s">
-								<Link href={"#"} legacyBehavior>
-									<a className="fugu--btn bg-gray active">Get Started</a>
+								<Link href={"/upload"} legacyBehavior>
+									<a className="fugu--btn bg-gray active">Subir Foto</a>
 								</Link>
-								<Link href={"#"} legacyBehavior>
-									<a className="fugu--btn bg-gray">View Artwork</a>
+								<Link href={"/about"} legacyBehavior>
+									<a className="fugu--btn bg-gray">Ver Galeria</a>
 								</Link>
 							</div>
 							<div className="fugu--counter-wrap wow fadeInUpX" data-wow-delay="0.30s">
 								<div className="fugu--counter-data">
 									<h2>
-										<span data-percentage="45" className="fugu--counter">
-											<CountUp end={45} />
+										<span data-percentage="1024" className="fugu--counter">
+											<CountUp end={1024} />
 										</span>
-										<strong>K</strong>
+										<strong>+</strong>
 									</h2>
-									<p>Artwork</p>
+									<p>Fotos Analizadas</p>
 								</div>
 								<div className="fugu--counter-data">
 									<h2>
-										<span data-percentage="86" className="fugu--counter">
-											<CountUp end={86} />
+										<span data-percentage="390" className="fugu--counter">
+											<CountUp end={390} />
 										</span>
-										<strong>K</strong>
+										<strong>+</strong>
 									</h2>
-									<p>Auction</p>
+									<p>Fallas Detectadas</p>
 								</div>
 								<div className="fugu--counter-data">
 									<h2>
-										<span data-percentage="32" className="fugu--counter">
-											<CountUp end={32} />
+										<span data-percentage="178" className="fugu--counter">
+											<CountUp end={178} />
 										</span>
-										<strong>K</strong>
+										<strong>+</strong>
 									</h2>
-									<p>Artist</p>
+									<p>Usuarios</p>
 								</div>
 							</div>
 						</div>
@@ -60,18 +59,18 @@ export default function HeroSection() {
 						<div className="fugu--hero-right" id="rotateOne">
 							<div className="fugu--card-wrap">
 								<div className="fugu--card-thumb">
-									<img src="/images/all-img/v3/hero-thumb2.png" alt="" />
+									<img src="/images/app-demo/building-analyze.png" alt="Ejemplo de análisis" />
 								</div>
 								<div className="fugu--card-data">
-									<h3>The Exorians Universe</h3>
-									<p>Pre-sale : 18 May 2023</p>
+									<h3>Analiza tu estructura ahora</h3>
+									<p>Resultados inmediatos</p>
 									<div className="fugu--card-footer">
 										<div className="fugu--card-footer-data">
-											<span>Mint Price:</span>
-											<h4>0.194 ETH</h4>
+											<span>IA Precisa</span>
+											<h4>+95% exactitud</h4>
 										</div>
-										<Link href={"#"} legacyBehavior>
-											<a className="fugu--btn btn-sm bg-white">Place a Bid</a>
+										<Link href={"/upload"} legacyBehavior>
+											<a className="fugu--btn btn-sm bg-white">Comenzar</a>
 										</Link>
 									</div>
 								</div>

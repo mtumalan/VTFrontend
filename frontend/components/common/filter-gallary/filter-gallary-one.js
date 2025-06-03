@@ -41,10 +41,10 @@ export default function FilterGalarryOne() {
 			<div className="container">
 				<div className="fugu--section-title">
 					<div className="fugu--default-content content-sm">
-						<h2>Explore the most unique artworks</h2>
+						<h2>Selecciona el modelo de análisis</h2>
 						<p>
-							NFTs are usually associated with non-physical art but in reality, there are several
-							different types of NFTs and are explained in this guide.
+							Elige el modelo de inteligencia artificial que deseas utilizar para analizar tus imágenes de
+							edificios o muros.
 						</p>
 					</div>
 				</div>
@@ -53,35 +53,33 @@ export default function FilterGalarryOne() {
 					<ul className="option-set clear-both">
 						<li onClick={handleFilterKeyChange("*")} className={handleActiveClass("*")}>
 							<span>
-								<img src="/images/all-img/v3/m-icon1.png" alt="" /> Artworks
+								<img src="/images/all-img/v3/m-icon1.png" alt="" /> Todos los modelos
 							</span>
 						</li>
-						<li onClick={handleFilterKeyChange("video")} className={handleActiveClass("video")}>
+						<li onClick={handleFilterKeyChange("grietas")} className={handleActiveClass("grietas")}>
 							<span>
 								<img src="/images/all-img/v3/m-icon2.png" alt="" />
-								Video-Game
+								Detección de grietas
 							</span>
 						</li>
-						<li onClick={handleFilterKeyChange("virtual")} className={handleActiveClass("virtual")}>
+						<li onClick={handleFilterKeyChange("humedad")} className={handleActiveClass("humedad")}>
 							<span>
-								<img src="/images/all-img/v3/m-icon3.png" alt="" /> Virtual Land
+								<img src="/images/all-img/v3/m-icon3.png" alt="" /> Detección de humedad
 							</span>
 						</li>
-						<li onClick={handleFilterKeyChange("domain")} className={handleActiveClass("domain")}>
+						<li onClick={handleFilterKeyChange("corrosion")} className={handleActiveClass("corrosion")}>
 							<span>
-								<img src="/images/all-img/v3/m-icon4.png" alt="" /> Domain Names
+								<img src="/images/all-img/v3/m-icon4.png" alt="" /> Detección de corrosión
 							</span>
 						</li>
-						<li onClick={handleFilterKeyChange("music")} className={handleActiveClass("music")}>
+						<li onClick={handleFilterKeyChange("clasificacion")} className={handleActiveClass("clasificacion")}>
 							<span>
-								<img src="/images/all-img/v3/m-icon5.png" alt="" />
-								Music
+								<img src="/images/all-img/v3/m-icon5.png" alt="" /> Clasificación general
 							</span>
 						</li>
-						<li onClick={handleFilterKeyChange("sports")} className={handleActiveClass("sports")}>
+						<li onClick={handleFilterKeyChange("otros")} className={handleActiveClass("otros")}>
 							<span>
-								<img src="/images/all-img/v3/m-icon6.png" alt="" />
-								Sports
+								<img src="/images/all-img/v3/m-icon6.png" alt="" /> Otros
 							</span>
 						</li>
 					</ul>
