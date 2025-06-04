@@ -18,9 +18,7 @@ export default function IndexThree() {
 			</Head>
 			<HeroSection />
 			<CardSliderOne />
-			<FilterGalarryOne />
 			<Team />
-			{/* <NftRoadMap /> */}
 		</>
 	);
 }

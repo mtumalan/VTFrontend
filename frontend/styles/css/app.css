@@ -2853,26 +2853,26 @@ footer.fugu--foote2-section .fugu--default-content {
 	}
 }
 
-.fugu--footer-menu2 {
+.fugu--header-menu2 {
 	text-align: center;
 }
-.fugu--footer-menu2 ul li {
+.fugu--header-menu2 ul li {
 	margin: 0 15px;
 	display: inline-block;
 }
-.fugu--footer-menu2 ul li:first-child {
+.fugu--header-menu2 ul li:first-child {
 	margin-left: 0;
 }
-.fugu--footer-menu2 ul li:last-child {
+.fugu--header-menu2 ul li:last-child {
 	margin-right: 0;
 }
-.fugu--footer-menu2 ul li a {
+.fugu--header-menu2 ul li a {
 	font-weight: 600;
-	color: var(--gray-800);
+	color: var(--gray-10);
 	transition: all 0.4s;
 }
-.fugu--footer-menu2 ul li a:hover {
-	color: var(--danger-500);
+.fugu--header-menu2 ul li a:hover {
+	color: var(--gray-10);
 }
 
 .fugu--footer-bottom.fugu--footer-bottom2 {
@@ -7999,6 +7999,36 @@ a.fugu-pricing-btn.active {
 		margin-bottom: 45px;
 		text-align: center;
 	}
+}
+
+.header-menu-list {
+  display: flex;
+  flex-direction: row;
+  gap: 0px;
+  align-items: center;
+  padding-right: 40px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.header-menu-list li {
+  margin: 0;
+  padding: 0;
+}
+.header-menu-list a {
+  display: block;
+  padding: 10px;
+  padding-right: 50px;
+  border-radius: 22px;
+  background: --gray-900;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.2s;
+}
+.header-menu-list a:hover {
+  background: --gray-900;
+  transform: translateY(-2px) scale(1.04);
 }
 
 /*1.3 pages css*/
