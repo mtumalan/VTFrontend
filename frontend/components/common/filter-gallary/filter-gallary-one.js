@@ -41,10 +41,10 @@ export default function FilterGalarryOne() {
 			<div className="container">
 				<div className="fugu--section-title">
 					<div className="fugu--default-content content-sm">
-						<h2>Selecciona el modelo de análisis</h2>
+						<h2>Select the analysis model</h2>
 						<p>
-							Elige el modelo de inteligencia artificial que deseas utilizar para analizar tus imágenes de
-							edificios o muros.
+							Choose the model you want to use to analyze your images of buildings or
+							walls.
 						</p>
 					</div>
 				</div>
@@ -53,33 +53,33 @@ export default function FilterGalarryOne() {
 					<ul className="option-set clear-both">
 						<li onClick={handleFilterKeyChange("*")} className={handleActiveClass("*")}>
 							<span>
-								<img src="/images/all-img/v3/m-icon1.png" alt="" /> Todos los modelos
+								<img src="/images/all-img/v3/m-icon1.png" alt="" /> All models
 							</span>
 						</li>
 						<li onClick={handleFilterKeyChange("grietas")} className={handleActiveClass("grietas")}>
 							<span>
 								<img src="/images/all-img/v3/m-icon2.png" alt="" />
-								Detección de grietas
+								Crack detection
 							</span>
 						</li>
 						<li onClick={handleFilterKeyChange("humedad")} className={handleActiveClass("humedad")}>
 							<span>
-								<img src="/images/all-img/v3/m-icon3.png" alt="" /> Detección de humedad
+								<img src="/images/all-img/v3/m-icon3.png" alt="" /> Moisture detection
 							</span>
 						</li>
 						<li onClick={handleFilterKeyChange("corrosion")} className={handleActiveClass("corrosion")}>
 							<span>
-								<img src="/images/all-img/v3/m-icon4.png" alt="" /> Detección de corrosión
+								<img src="/images/all-img/v3/m-icon4.png" alt="" /> Corrosion detection
 							</span>
 						</li>
 						<li onClick={handleFilterKeyChange("clasificacion")} className={handleActiveClass("clasificacion")}>
 							<span>
-								<img src="/images/all-img/v3/m-icon5.png" alt="" /> Clasificación general
+								<img src="/images/all-img/v3/m-icon5.png" alt="" /> General classification
 							</span>
 						</li>
 						<li onClick={handleFilterKeyChange("otros")} className={handleActiveClass("otros")}>
 							<span>
-								<img src="/images/all-img/v3/m-icon6.png" alt="" /> Otros
+								<img src="/images/all-img/v3/m-icon6.png" alt="" /> Others
 							</span>
 						</li>
 					</ul>

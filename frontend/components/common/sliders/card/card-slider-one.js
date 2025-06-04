@@ -49,83 +49,79 @@ export default function CardSliderOne() {
 			<div className="container">
 				<div className="fugu--section-title">
 					<div className="fugu--default-content content-sm">
-						<h2>Ejemplos de análisis recientes</h2>
-						<p>
-							Estos son algunos ejemplos de imágenes analizadas por nuestros modelos de detección de fallas
-							estructurales. Observa cómo se identifican grietas, humedad y otros problemas en muros y edificios.
-						</p>
+						<h2>Our available models</h2>
 					</div>
 				</div>
 				<div className="fugu--slider-one">
 					<Slider {...settings}>
 						<div className="fugu--card-wrap">
 							<div className="fugu--card-thumb">
-								<img src="/images/all-img/v3/card1.jpg" alt="Ejemplo de grieta en muro" />
+								<img src="/images/all-img/v3/card1.jpg" alt="Example of crack in wall" />
 							</div>
 							<div className="fugu--card-data">
-								<h3>Detección de grietas</h3>
-								<p>El modelo identificó varias grietas en la superficie del muro.</p>
+								<h3>Crack detection</h3>
+								<p>The model identified several cracks on the wall surface.</p>
 								<div className="fugu--card-footer">
 									<div className="fugu--card-footer-data">
-										<span>Precisión:</span>
+										<span>Accuracy:</span>
 										<h4>92%</h4>
 									</div>
 									<Link href={"/"} legacyBehavior>
-										<a className="fugu--btn btn-sm bg-white">Ver detalle</a>
+										<a className="fugu--btn btn-sm bg-white">View details</a>
 									</Link>
 								</div>
 							</div>
 						</div>
 						<div className="fugu--card-wrap">
 							<div className="fugu--card-thumb">
-								<img src="/images/all-img/v3/card2.jpg" alt="Ejemplo de humedad" />
+								<img src="/images/all-img/v3/card2.jpg" alt="Example of moisture" />
 							</div>
 							<div className="fugu--card-data">
-								<h3>Detección de humedad</h3>
-								<p>Se detectaron manchas de humedad en la pared analizada.</p>
+								<h3>Moisture detection</h3>
+								<p>Moisture stains were detected on the analyzed wall.</p>
 								<div className="fugu--card-footer">
 									<div className="fugu--card-footer-data">
-										<span>Precisión:</span>
+										<span>Accuracy:</span>
 										<h4>89%</h4>
 									</div>
 									<Link href={"/"} legacyBehavior>
-										<a className="fugu--btn btn-sm bg-white">Ver detalle</a>
+										<a className="fugu--btn btn-sm bg-white">View details</a>
 									</Link>
 								</div>
 							</div>
 						</div>
 						<div className="fugu--card-wrap">
 							<div className="fugu--card-thumb">
-								<img src="/images/all-img/v3/card3.jpg" alt="Ejemplo de corrosión" />
+								<img src="/images/all-img/v3/card3.jpg" alt="Example of corrosion" />
 							</div>
 							<div className="fugu--card-data">
-								<h3>Detección de corrosión</h3>
-								<p>El sistema encontró zonas con corrosión en elementos metálicos.</p>
+								<h3>Corrosion detection</h3>
+								<p>The system found areas with corrosion on metal elements.</p>
 								<div className="fugu--card-footer">
 									<div className="fugu--card-footer-data">
-										<span>Precisión:</span>
+										<span>Accuracy:</span>
 										<h4>87%</h4>
 									</div>
 									<Link href={"/"} legacyBehavior>
-										<a className="fugu--btn btn-sm bg-white">Ver detalle</a>
+										<a className="fugu--btn btn-sm bg-white">View details</a>
 									</Link>
 								</div>
 							</div>
 						</div>
 						<div className="fugu--card-wrap">
 							<div className="fugu--card-thumb">
-								<img src="/images/all-img/v3/card5.jpg" alt="Ejemplo de análisis general" />
+								<img src="/images/all-img/v3/card5.jpg" alt="Example of general analysis" />
 							</div>
 							<div className="fugu--card-data">
-								<h3>Análisis general</h3>
-								<p>El modelo clasificó la imagen según el tipo de falla predominante.</p>
+								<h3>General analysis</h3>
+								<p>The model classified the image according to the predominant failure type.</p>
 								<div className="fugu--card-footer">
 									<div className="fugu--card-footer-data">
-										<span>Precisión:</span>
+										<span>Accuracy:</span>
 										<h4>91%</h4>
 									</div>
 									<Link href={"/"} legacyBehavior>
-										<a className="fugu--btn btn-sm bg-white">Ver detalle</a>
+										<a className="fugu--btn btn-sm bg-white">View details</a>
 									</Link>
 								</div>
 							</div>

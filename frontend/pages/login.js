@@ -1,4 +1,4 @@
-import InnerSection from "../components/contact-dark/inner-section";
+import InnerSection from "../components/login/inner-section";
 
 export default function ContactDark() {
 	return <InnerSection />;

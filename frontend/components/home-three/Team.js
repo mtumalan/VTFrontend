@@ -8,11 +8,11 @@ export default function Team() {
 				<div className="fugu--section-title-wrap">
 					<div className="fugu--section-title">
 						<div className="fugu--default-content content-sm">
-							<h2>Conoce al equipo de desarrollo</h2>
+							<h2>Meet the Development Team</h2>
 							<p>
-								Somos un equipo multidisciplinario enfocado en crear soluciones tecnológicas para la detección de
-								fallas estructurales en edificaciones y muros. Nuestra misión es facilitar el análisis y la
-								prevención de riesgos mediante inteligencia artificial.
+								We are a multidisciplinary team focused on creating technological solutions for the detection of
+								structural failures in buildings and walls. Our mission is to facilitate analysis and risk
+								prevention through artificial intelligence.
 							</p>
 						</div>
 					</div>
@@ -20,7 +20,7 @@ export default function Team() {
 						<div className="fugu--portfolio-btn">
 							<Link href={"#"} legacyBehavior>
 								<a className="fugu--outline-btn">
-									<span>Ver todos los miembros</span>
+									<span>View all members</span>
 								</a>
 							</Link>
 						</div>
@@ -35,7 +35,7 @@ export default function Team() {
 								</div>
 								<div className="fugu--team-data">
 									<h4>Gabriel</h4>
-									<p>Desarrollador</p>
+									<p>Developer</p>
 								</div>
 							</div>
 							<button type="button" className="fugu--dot-btn">
@@ -51,7 +51,7 @@ export default function Team() {
 								</div>
 								<div className="fugu--team-data">
 									<h4>Mauricio</h4>
-									<p>Desarrollador</p>
+									<p>Developer</p>
 								</div>
 							</div>
 							<button type="button" className="fugu--dot-btn">
@@ -67,7 +67,7 @@ export default function Team() {
 								</div>
 								<div className="fugu--team-data">
 									<h4>Daniel</h4>
-									<p>Desarrollador</p>
+									<p>Developer</p>
 								</div>
 							</div>
 							<button type="button" className="fugu--dot-btn">
@@ -83,7 +83,7 @@ export default function Team() {
 								</div>
 								<div className="fugu--team-data">
 									<h4>Carlos</h4>
-									<p>Desarrollador</p>
+									<p>Developer</p>
 								</div>
 							</div>
 							<button type="button" className="fugu--dot-btn">
@@ -99,7 +99,7 @@ export default function Team() {
 								</div>
 								<div className="fugu--team-data">
 									<h4>Erik</h4>
-									<p>Desarrollador</p>
+									<p>Developer</p>
 								</div>
 							</div>
 							<button type="button" className="fugu--dot-btn">
