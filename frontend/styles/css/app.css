@@ -8100,20 +8100,27 @@ a.fugu-pricing-btn.active {
 .fugu-error-content h1 {
 	font-size: 150px;
 	line-height: 176px;
+	color: var(--gray-10);
+}
+.fugu-error-content h2 {
+	color: var(--gray-10);
 }
 @media (max-width: 991px) {
 	.fugu-error-content h1 {
 		font-size: 120px;
 		line-height: 140px;
+		color: var(--gray-10);
 	}
 }
 @media (max-width: 767px) {
 	.fugu-error-content h1 {
 		font-size: 100px;
 		line-height: 120px;
+		color: var(--gray-10);
 	}
 }
 .fugu-error-content p {
+	color: var(--gray-10);
 	margin-bottom: 55px;
 	padding: 0 30px;
 }
