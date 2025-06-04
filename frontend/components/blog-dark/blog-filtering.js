@@ -4,442 +4,240 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 export default function BlogFiltering() {
-	const isotope = useRef();
-	const [activeClass, setActiveClass] = useState("*");
-	const [filterKey, setFilterKey] = useState("*");
-	useEffect(() => {
-		isotope.current = new Isotope("#fugu--two-column", {
-			itemSelector: ".collection-grid-item",
-			layoutMode: "fitRows",
+    const isotope = useRef();
+    const [activeClass, setActiveClass] = useState("*");
+    const [filterKey, setFilterKey] = useState("*");
+    const [modalImg, setModalImg] = useState(null); // Nuevo estado para el modal
 
-			percentPosition: true,
-		});
-		return () => isotope.current.destroy();
-	}, []);
+    useEffect(() => {
+        isotope.current = new Isotope("#fugu--two-column", {
+            itemSelector: ".collection-grid-item",
+            layoutMode: "fitRows",
+            percentPosition: true,
+        });
+        return () => isotope.current.destroy();
+    }, []);
 
-	useEffect(() => {
-		filterKey === "*"
-			? isotope.current.arrange({ filter: `*` })
-			: isotope.current.arrange({ filter: `.${filterKey}` });
-	}, [filterKey]);
+    useEffect(() => {
+        filterKey === "*"
+            ? isotope.current.arrange({ filter: `*` })
+            : isotope.current.arrange({ filter: `.${filterKey}` });
+    }, [filterKey]);
 
-	const handleFilterKeyChange = (key) => () => {
-		setFilterKey(key);
-		setActiveClass(key);
-	};
+    const handleFilterKeyChange = (key) => () => {
+        setFilterKey(key);
+        setActiveClass(key);
+    };
 
-	const handleActiveClass = (key) => {
-		if (key === activeClass) return "active";
-	};
-	return (
-		<div className="fugu--blog-filtering dark-version row">
-			<div className="fugu--section-title-wrap col-md-12">
-				<div className="fugu--default-content content-sm">
-					<h2>Latest articles</h2>
-				</div>
-				<div className="fugu--portfolio-menu">
-					<ul className="option-set clear-both">
-						<li onClick={handleFilterKeyChange("*")} className={handleActiveClass("*")}>
-							<span>All</span>
-						</li>
-						<li onClick={handleFilterKeyChange("analysis")} className={handleActiveClass("analysis")}>
-							<span>Art & Analysis</span>
-						</li>
-						<li onClick={handleFilterKeyChange("collectible")} className={handleActiveClass("collectible")}>
-							<span>Collectible</span>
-						</li>
-						<li onClick={handleFilterKeyChange("metaverse")} className={handleActiveClass("metaverse")}>
-							<span>Metaverse</span>
-						</li>
-						<li onClick={handleFilterKeyChange("utility")} className={handleActiveClass("utility")}>
-							<span>Utility</span>
-						</li>
-					</ul>
-				</div>
-			</div>
+    const handleActiveClass = (key) => {
+        if (key === activeClass) return "active";
+    };
 
-			<div className="col-12">
-				<div className="fugu--portfolio-wrap row" id="fugu--two-column">
-					<div className="collection-grid-item analysis wow fadeInUpX col-lg-6 col-sm-12" data-wow-delay="0s">
-						<div className="fugu--blog-wrap">
-							<div className="fugu--blog-thumb">
-								<Link href="single-blog-dark">
-									<img src="/images/all-img/blog2/dark/blog1.png" alt="" />
-								</Link>
-								<div className="fugu--blog-badge">Art & Analysis</div>
-							</div>
-							<div className="fugu--blog-content">
-								<div className="fugu--blog-date">
-									<ul>
-										<li>
-											<Link href="/">
-												<img src="/images/svg2/calendar.svg" alt="" />
-												July 18, 2022
-											</Link>
-										</li>
-										<li>
-											<Link href="/">
-												<img src="/images/svg2/clock.svg" alt="" />5 min read
-											</Link>
-										</li>
-									</ul>
-								</div>
-								<div className="fugu--blog-title">
-									<Link href="single-blog-dark">
-										<h3>What does the NFT Ecosystem look like after the Boom?</h3>
-									</Link>
-								</div>
-								<p>
-									It has now been 6 months since the NFT market saw indicators strongly shaken up,
-									with additional over hype a month ago...
-								</p>
-								<div className="fugu--blog-user">
-									<div className="fugu--blog-user-thumb">
-										<img src="/images/all-img/blog2/author1.png" alt="" />
-									</div>
-									<div className="fugu--blog-user-data">
-										<span>Dianne Russell</span>
-										<p>Author</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div
-						className="collection-grid-item sports collectible wow fadeInUpX col-lg-6 col-sm-12"
-						data-wow-delay=".10s"
-					>
-						<div className="fugu--blog-wrap">
-							<div className="fugu--blog-thumb">
-								<Link href="single-blog-dark">
-									<img src="/images/all-img/blog2/dark/blog2.png" alt="" />
-								</Link>
-								<div className="fugu--blog-badge">Art & Analysis</div>
-							</div>
-							<div className="fugu--blog-content">
-								<div className="fugu--blog-date">
-									<ul>
-										<li>
-											<Link href="/">
-												<img src="/images/svg2/calendar.svg" alt="" />
-												July 18, 2022
-											</Link>
-										</li>
-										<li>
-											<Link href="/">
-												<img src="/images/svg2/clock.svg" alt="" />5 min read
-											</Link>
-										</li>
-									</ul>
-								</div>
-								<div className="fugu--blog-title">
-									<Link href="single-blog-dark">
-										<h3>MegaCryptoPolis distributed $63M to players since 2018 in Metaverse</h3>
-									</Link>
-								</div>
-								<p>
-									It has now been 6 months since the NFT market saw indicators strongly shaken up,
-									with additional over hype a month ago...
-								</p>
-								<div className="fugu--blog-user">
-									<div className="fugu--blog-user-thumb">
-										<img src="/images/all-img/blog2/author2.png" alt="" />
-									</div>
-									<div className="fugu--blog-user-data">
-										<span>Kathryn Murphy</span>
-										<p>Author</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div className="collection-grid-item analysis wow fadeInUpX col-lg-6 col-sm-12" data-wow-delay="0s">
-						<div className="fugu--blog-wrap">
-							<div className="fugu--blog-thumb">
-								<Link href="single-blog-dark">
-									<img src="/images/all-img/blog2/dark/blog1.png" alt="" />
-								</Link>
-								<div className="fugu--blog-badge">Art & Analysis</div>
-							</div>
-							<div className="fugu--blog-content">
-								<div className="fugu--blog-date">
-									<ul>
-										<li>
-											<Link href="/">
-												<img src="/images/svg2/calendar.svg" alt="" />
-												July 18, 2022
-											</Link>
-										</li>
-										<li>
-											<Link href="/">
-												<img src="/images/svg2/clock.svg" alt="" />5 min read
-											</Link>
-										</li>
-									</ul>
-								</div>
-								<div className="fugu--blog-title">
-									<Link href="single-blog-dark">
-										<h3>What does the NFT Ecosystem look like after the Boom?</h3>
-									</Link>
-								</div>
-								<p>
-									It has now been 6 months since the NFT market saw indicators strongly shaken up,
-									with additional over hype a month ago...
-								</p>
-								<div className="fugu--blog-user">
-									<div className="fugu--blog-user-thumb">
-										<img src="/images/all-img/blog2/author1.png" alt="" />
-									</div>
-									<div className="fugu--blog-user-data">
-										<span>Dianne Russell</span>
-										<p>Author</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div
-						className="collection-grid-item sports collectible wow fadeInUpX col-lg-6 col-sm-12"
-						data-wow-delay=".10s"
-					>
-						<div className="fugu--blog-wrap">
-							<div className="fugu--blog-thumb">
-								<Link href="single-blog-dark">
-									<img src="/images/all-img/blog2/dark/blog2.png" alt="" />
-								</Link>
-								<div className="fugu--blog-badge">Art & Analysis</div>
-							</div>
-							<div className="fugu--blog-content">
-								<div className="fugu--blog-date">
-									<ul>
-										<li>
-											<Link href="/">
-												<img src="/images/svg2/calendar.svg" alt="" />
-												July 18, 2022
-											</Link>
-										</li>
-										<li>
-											<Link href="/">
-												<img src="/images/svg2/clock.svg" alt="" />5 min read
-											</Link>
-										</li>
-									</ul>
-								</div>
-								<div className="fugu--blog-title">
-									<Link href="single-blog-dark">
-										<h3>MegaCryptoPolis distributed $63M to players since 2018 in Metaverse</h3>
-									</Link>
-								</div>
-								<p>
-									It has now been 6 months since the NFT market saw indicators strongly shaken up,
-									with additional over hype a month ago...
-								</p>
-								<div className="fugu--blog-user">
-									<div className="fugu--blog-user-thumb">
-										<img src="/images/all-img/blog2/author2.png" alt="" />
-									</div>
-									<div className="fugu--blog-user-data">
-										<span>Kathryn Murphy</span>
-										<p>Author</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div
-						className="collection-grid-item collectible wow fadeInUpX col-lg-6 col-sm-12"
-						data-wow-delay=".20s"
-					>
-						<div className="fugu--blog-wrap">
-							<div className="fugu--blog-thumb">
-								<Link href="single-blog-dark">
-									<img src="/images/all-img/blog2/dark/blog3.png" alt="" />
-								</Link>
-								<div className="fugu--blog-badge">Art & Analysis</div>
-							</div>
-							<div className="fugu--blog-content">
-								<div className="fugu--blog-date">
-									<ul>
-										<li>
-											<Link href="/">
-												<img src="/images/svg2/calendar.svg" alt="" />
-												July 18, 2022
-											</Link>
-										</li>
-										<li>
-											<Link href="/">
-												<img src="/images/svg2/clock.svg" alt="" />5 min read
-											</Link>
-										</li>
-									</ul>
-								</div>
-								<div className="fugu--blog-title">
-									<Link href="single-blog-dark">
-										<h3>Always be on time on your NFTs and metaverse event with Dwiss!</h3>
-									</Link>
-								</div>
-								<p>
-									It has now been 6 months since the NFT market saw indicators strongly shaken up,
-									with additional over hype a month ago...
-								</p>
-								<div className="fugu--blog-user">
-									<div className="fugu--blog-user-thumb">
-										<img src="/images/all-img/blog2/author3.png" alt="" />
-									</div>
-									<div className="fugu--blog-user-data">
-										<span>Dianne Russell</span>
-										<p>Author</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div
-						className="collection-grid-item metaverse sports wow fadeInUpX col-lg-6 col-sm-12"
-						data-wow-delay=".30s"
-					>
-						<div className="fugu--blog-wrap">
-							<div className="fugu--blog-thumb">
-								<Link href="single-blog-dark">
-									<img src="/images/all-img/blog2/dark/blog4.png" alt="" />
-								</Link>
-								<div className="fugu--blog-badge">Art & Analysis</div>
-							</div>
-							<div className="fugu--blog-content">
-								<div className="fugu--blog-date">
-									<ul>
-										<li>
-											<Link href="/">
-												<img src="/images/svg2/calendar.svg" alt="" />
-												July 18, 2022
-											</Link>
-										</li>
-										<li>
-											<Link href="/">
-												<img src="/images/svg2/clock.svg" alt="" />5 min read
-											</Link>
-										</li>
-									</ul>
-								</div>
-								<div className="fugu--blog-title">
-									<Link href="single-blog-dark">
-										<h3>Mekaverse Launch: Let’s take a step back with data!</h3>
-									</Link>
-								</div>
-								<p>
-									It has now been 6 months since the NFT market saw indicators strongly shaken up,
-									with additional over hype a month ago...
-								</p>
-								<div className="fugu--blog-user">
-									<div className="fugu--blog-user-thumb">
-										<img src="/images/all-img/blog2/author4.png" alt="" />
-									</div>
-									<div className="fugu--blog-user-data">
-										<span>Theresa Webb</span>
-										<p>Author</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div
-						className="collection-grid-item utility collectible wow fadeInUpX col-lg-6 col-sm-12"
-						data-wow-delay=".40s"
-					>
-						<div className="fugu--blog-wrap">
-							<div className="fugu--blog-thumb">
-								<Link href="single-blog-dark">
-									<img src="/images/all-img/blog2/dark/blog5.png" alt="" />
-								</Link>
-								<div className="fugu--blog-badge">Art & Analysis</div>
-							</div>
-							<div className="fugu--blog-content">
-								<div className="fugu--blog-date">
-									<ul>
-										<li>
-											<Link href="/">
-												<img src="/images/svg2/calendar.svg" alt="" />
-												July 18, 2022
-											</Link>
-										</li>
-										<li>
-											<Link href="/">
-												<img src="/images/svg2/clock.svg" alt="" />5 min read
-											</Link>
-										</li>
-									</ul>
-								</div>
-								<div className="fugu--blog-title">
-									<Link href="single-blog-dark">
-										<h3>Ultra Club & NFTs: Is E11even Miami the King of Non-Fungible Nightlife?</h3>
-									</Link>
-								</div>
-								<p>
-									It has now been 6 months since the NFT market saw indicators strongly shaken up,
-									with additional over hype a month ago...
-								</p>
-								<div className="fugu--blog-user">
-									<div className="fugu--blog-user-thumb">
-										<img src="/images/all-img/blog2/author1.png" alt="" />
-									</div>
-									<div className="fugu--blog-user-data">
-										<span>Arlene McCoy</span>
-										<p>Author</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div
-						className="collection-grid-item utility wow fadeInUpX col-lg-6 col-sm-12"
-						data-wow-delay=".50s"
-					>
-						<div className="fugu--blog-wrap">
-							<div className="fugu--blog-thumb">
-								<Link href="single-blog-dark">
-									<img src="/images/all-img/blog2/dark/blog6.png" alt="" />
-								</Link>
-								<div className="fugu--blog-badge">Art & Analysis</div>
-							</div>
-							<div className="fugu--blog-content">
-								<div className="fugu--blog-date">
-									<ul>
-										<li>
-											<Link href="/">
-												<img src="/images/svg2/calendar.svg" alt="" />
-												July 18, 2022
-											</Link>
-										</li>
-										<li>
-											<Link href="/">
-												<img src="/images/svg2/clock.svg" alt="" />5 min read
-											</Link>
-										</li>
-									</ul>
-								</div>
-								<div className="fugu--blog-title">
-									<Link href="single-blog-dark">
-										<h3>ART Domains open call: exhibit in the metaverse with Roborace</h3>
-									</Link>
-								</div>
-								<p>
-									It has now been 6 months since the NFT market saw indicators strongly shaken up,
-									with additional over hype a month ago...
-								</p>
-								<div className="fugu--blog-user">
-									<div className="fugu--blog-user-thumb">
-										<img src="/images/all-img/blog2/author1.png" alt="" />
-									</div>
-									<div className="fugu--blog-user-data">
-										<span>Marvin McKinney</span>
-										<p>Author</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+    // Controla la clase del body para el modal
+    useEffect(() => {
+        if (modalImg) {
+            document.body.classList.add("sora-modal-open");
+        } else {
+            document.body.classList.remove("sora-modal-open");
+        }
+        return () => {
+            document.body.classList.remove("sora-modal-open");
+        };
+    }, [modalImg]);
+
+    // Array de imágenes y categorías para simplificar el renderizado
+    const images = [
+        { src: "/images/all-img/blog2/dark/blog1.png", category: "analysis", text: "Descripción de la imagen 1" },
+        { src: "/images/all-img/blog2/dark/blog2.png", category: "collectible", text: "Descripción de la imagen 2" },
+        { src: "/images/all-img/blog2/dark/blog1.png", category: "analysis", text: "Descripción de la imagen 3" },
+        { src: "/images/all-img/blog2/dark/blog2.png", category: "collectible", text: "Descripción de la imagen 4" },
+        { src: "/images/all-img/blog2/dark/blog3.png", category: "collectible", text: "Descripción de la imagen 5" },
+        { src: "/images/all-img/blog2/dark/blog4.png", category: "metaverse", text: "Descripción de la imagen 6" },
+        { src: "/images/all-img/blog2/dark/blog5.png", category: "utility", text: "Descripción de la imagen 7" },
+        { src: "/images/all-img/blog2/dark/blog6.png", category: "utility", text: "Descripción de la imagen 8" },
+    ];
+
+    return (
+        <div className="fugu--blog-filtering dark-version row">
+            <div className="fugu--section-title-wrap col-md-12">
+                <div className="fugu--default-content content-sm">
+                    <h2>Galería</h2>
+                </div>
+                <div className="fugu--portfolio-menu">
+                    <ul className="option-set clear-both">
+                        <li onClick={handleFilterKeyChange("*")} className={handleActiveClass("*")}>
+                            <span>Todos</span>
+                        </li>
+                        <li onClick={handleFilterKeyChange("analysis")} className={handleActiveClass("analysis")}>
+                            <span>Art & Analysis</span>
+                        </li>
+                        <li onClick={handleFilterKeyChange("collectible")} className={handleActiveClass("collectible")}>
+                            <span>Collectible</span>
+                        </li>
+                        <li onClick={handleFilterKeyChange("metaverse")} className={handleActiveClass("metaverse")}>
+                            <span>Metaverse</span>
+                        </li>
+                        <li onClick={handleFilterKeyChange("utility")} className={handleActiveClass("utility")}>
+                            <span>Utility</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div className="col-12">
+                {/* Galería tipo Sora: solo imágenes, sin texto, imágenes pegadas */}
+                <div
+                    className="fugu--portfolio-wrap sora-gallery"
+                    id="fugu--two-column"
+                >
+                    {images.map((img, idx) => (
+                        <div
+                            key={idx}
+                            className={`collection-grid-item ${img.category} sora-gallery-col`}
+                            onClick={() => setModalImg(img)}
+                            style={{ cursor: "pointer" }}
+                        >
+                            <div className="sora-gallery-img-wrap">
+                                <img
+                                    src={img.src}
+                                    alt=""
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                        display: "block",
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Modal para mostrar la imagen grande y el texto */}
+            {modalImg && (
+                <div className="sora-modal" onClick={() => setModalImg(null)}>
+                    <div className="sora-modal-content sora-modal-content-large" onClick={e => e.stopPropagation()}>
+                        <img src={modalImg.src} alt="" className="sora-modal-img-large" />
+                        <div className="sora-modal-text">{modalImg.text}</div>
+                        <button className="sora-modal-close" onClick={() => setModalImg(null)}>×</button>
+                    </div>
+                </div>
+            )}
+
+            <style jsx>{`
+                .sora-gallery {
+                    display: flex;
+                    flex-wrap: wrap;
+                    margin: 0;
+                    padding: 0;
+                }
+                .sora-gallery-col {
+                    width: 33.3333%;
+                    padding: 0;
+                    margin: 0;
+                }
+                .sora-gallery-img-wrap {
+                    width: 100%;
+                    height: 220px;
+                    overflow: hidden;
+                }
+                @media (max-width: 992px) {
+                    .sora-gallery-col {
+                        width: 50%;
+                    }
+                    .sora-gallery-img-wrap {
+                        height: 160px;
+                    }
+                }
+                @media (max-width: 768px) {
+                    .sora-gallery-col {
+                        width: 100%;
+                    }
+                    .sora-gallery-img-wrap {
+                        height: 140px;
+                    }
+                }
+                .sora-modal {
+                    position: fixed;
+                    inset: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    min-height: 100dvh;
+                    background: rgba(0,0,0,0.85);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 2147483647; /* Máximo valor seguro para z-index */
+                    pointer-events: auto;
+                }
+                .sora-modal-content {
+                    background: #181818;
+                    border-radius: 10px;
+                    padding: 24px 24px 16px 24px;
+                    max-width: 100vw;
+                    max-height: 100vh;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    position: relative;
+                }
+                .sora-modal-content-large {
+                    max-width: 100vw;
+                    max-height: 100vh;
+                    padding: 0;
+                    background: transparent;
+                    box-shadow: none;
+                }
+                .sora-modal-img-large {
+                    max-width: 100vw;
+                    max-height: 98vh;
+                    width: auto;
+                    height: auto;
+                    border-radius: 0;
+                    margin-bottom: 16px;
+                    background: #181818;
+                    display: block;
+                }
+                .sora-modal-text {
+                    color: #fff;
+                    font-size: 1.1rem;
+                    text-align: center;
+                    margin-bottom: 8px;
+                }
+                .sora-modal-close {
+                    position: absolute;
+                    top: 8px;
+                    right: 16px;
+                    background: transparent;
+                    border: none;
+                    color: #fff;
+                    font-size: 2rem;
+                    cursor: pointer;
+                }
+            `}</style>
+            <style jsx global>{`
+                body.sora-modal-open footer,
+                body.sora-modal-open .footer,
+                body.sora-modal-open [class*="footer"] {
+                    display: none !important;
+                }
+                body.sora-modal-open {
+                    padding-bottom: 0 !important;
+                    margin-bottom: 0 !important;
+                    background: #181818 !important;
+                }
+                body.sora-modal-open #__next {
+                    padding-bottom: 0 !important;
+                    margin-bottom: 0 !important;
+                    background: #181818 !important;
+                }
+                html, body, #__next {
+                    height: 100%;
+                    min-height: 100%;
+                    background: #181818 !important;
+                }
+            `}</style>
+        </div>
+    );
 }

@@ -11,10 +11,7 @@ export default function BlogDarkInnerSection() {
 	return (
 		<div className="fugu--inner-section dark-version">
 			<div className="container">
-				<BreadcrumbsSection />
-				<BlogTopSection />
 				<BlogFilterning />
-				<BlogPaginationDark />
 			</div>
 
 			<div className="fugu--blog-shape1">
