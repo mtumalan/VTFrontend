@@ -36,3 +36,5 @@ build/
 
 # Docker-generated files (if any)
 docker-compose.override.yml
+docker-compose.dev.yml
+Dockerfile.dev
