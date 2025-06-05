@@ -1,17 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 
 import dynamic from "next/dynamic";
-import BlogTopSection from "../blog-light/blog-top-section";
-import BreadcrumbsSection from "../blog-light/breadcrumbs-section";
-import BlogPaginationDark from "./blog-pagination";
-const BlogFilterning = dynamic(() => import("./blog-filtering"), {
+const GalleryFilterning = dynamic(() => import("./gallery"), {
 	ssr: false,
 });
-export default function BlogDarkInnerSection() {
+export default function GalleryDarkInnerSection() {
 	return (
 		<div className="fugu--inner-section dark-version">
 			<div className="container">
-				<BlogFilterning />
+				<GalleryFilterning />
 			</div>
 
 			<div className="fugu--blog-shape1">
