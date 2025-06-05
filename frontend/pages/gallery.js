@@ -1,4 +1,4 @@
-import GalleryDarkInnerSection from "../components/blog-dark/gallery-inner-secction";
+import GalleryDarkInnerSection from "../components/gallery/gallery-inner-secction";
 
 export default function BlogDark() {
 	return <GalleryDarkInnerSection />;
