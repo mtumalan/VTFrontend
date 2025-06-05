@@ -1,7 +1,7 @@
-import BlogDarkInnerSection from "../components/blog-dark/blog-dark-inner-section";
+import GalleryDarkInnerSection from "../components/blog-dark/gallery-inner-secction";
 
 export default function BlogDark() {
-	return <BlogDarkInnerSection />;
+	return <GalleryDarkInnerSection />;
 }
 
 export async function getStaticProps() {

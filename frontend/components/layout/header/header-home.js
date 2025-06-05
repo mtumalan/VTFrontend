@@ -39,7 +39,7 @@ export default function HeaderHome() {
 							<div className="fugu--header-menu2">
 								<ul className="header-menu-list">
 									<li>
-										<Link href={"#"}> Gallery </Link>
+										<Link href={"/gallery"}> Gallery </Link>
 									</li>
 									<li>
 										<Link href={"about-us"}> My photos </Link>
