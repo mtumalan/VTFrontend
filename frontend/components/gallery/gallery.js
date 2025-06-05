@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { GALLERY_ENDPOINT } from "../../utils/api";
+import { INTERFERENCE_JOBS_ENDPOINT } from "../../utils/api";
 
 export default function Gallery() {
 	const [images, setimages] = useState([]);
@@ -9,7 +9,7 @@ export default function Gallery() {
 	const [selectedImage, setSelectedImage] = useState(null);
 
 	useEffect(() => {
-		fetch(GALLERY_ENDPOINT)
+		fetch(INTERFERENCE_JOBS_ENDPOINT)
 			.then((res) => res.json())
 			.then((data) => setimages(data))
 			.catch((err) => console.error(err));
@@ -45,7 +45,7 @@ export default function Gallery() {
 										href={image.link || "single-blog-dark"}
 										onClick={(e) => e.preventDefault()}
 									>
-										<img src={image.image} alt="" />
+										<img src={image.input_image} alt="" />
 									</Link>
 								</div>
 							</div>
@@ -60,8 +60,15 @@ export default function Gallery() {
 						<button onClick={closeModal} className="gallery-modal-close">
 							&times;
 						</button>
-						    <img src={selectedImage.image} alt="" className="gallery-modal-image"
-						/>
+						<img src={selectedImage.input_image} alt="Input" className="gallery-modal-image" />
+						{selectedImage.mask_image && (
+							<img
+								src={selectedImage.mask_image}
+								alt="Mask"
+								className="gallery-modal-image"
+								style={{ marginLeft: "16px" }}
+							/>
+						)}
 						<h3 className="gallery-modal-model">
 							{selectedImage.model}
 						</h3>
