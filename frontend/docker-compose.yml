@@ -14,9 +14,3 @@ services:
       - "3000:3000"
     # No volumes: the code is baked into the image at build time
     command: yarn start             # <-- run the production server
-    networks:
-      - vt_shared_network
-
-networks:
-  vt_shared_network:
-    external: true
