@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Isotope from "isotope-layout";
 import Link from "next/link";
+// ...existing code...
 import { useEffect, useRef, useState } from "react";
 
 export default function BlogFiltering() {
@@ -32,18 +33,6 @@ export default function BlogFiltering() {
     const handleActiveClass = (key) => {
         if (key === activeClass) return "active";
     };
-
-    // Controla la clase del body para el modal
-    useEffect(() => {
-        if (modalImg) {
-            document.body.classList.add("sora-modal-open");
-        } else {
-            document.body.classList.remove("sora-modal-open");
-        }
-        return () => {
-            document.body.classList.remove("sora-modal-open");
-        };
-    }, [modalImg]);
 
     // Array de imágenes y categorías para simplificar el renderizado
     const images = [
@@ -117,8 +106,8 @@ export default function BlogFiltering() {
             {/* Modal para mostrar la imagen grande y el texto */}
             {modalImg && (
                 <div className="sora-modal" onClick={() => setModalImg(null)}>
-                    <div className="sora-modal-content sora-modal-content-large" onClick={e => e.stopPropagation()}>
-                        <img src={modalImg.src} alt="" className="sora-modal-img-large" />
+                    <div className="sora-modal-content" onClick={e => e.stopPropagation()}>
+                        <img src={modalImg.src} alt="" />
                         <div className="sora-modal-text">{modalImg.text}</div>
                         <button className="sora-modal-close" onClick={() => setModalImg(null)}>×</button>
                     </div>
@@ -160,44 +149,32 @@ export default function BlogFiltering() {
                 }
                 .sora-modal {
                     position: fixed;
-                    inset: 0;
+                    top: 0;
+                    left: 0;
                     width: 100vw;
                     height: 100vh;
-                    min-height: 100dvh;
                     background: rgba(0,0,0,0.85);
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    z-index: 2147483647; /* Máximo valor seguro para z-index */
-                    pointer-events: auto;
+                    z-index: 2147483647; /* Asegura que esté por encima de todo, incluso el footer */
                 }
                 .sora-modal-content {
                     background: #181818;
                     border-radius: 10px;
                     padding: 24px 24px 16px 24px;
-                    max-width: 100vw;
-                    max-height: 100vh;
+                    max-width: 90vw;
+                    max-height: 90vh;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     position: relative;
                 }
-                .sora-modal-content-large {
-                    max-width: 100vw;
-                    max-height: 100vh;
-                    padding: 0;
-                    background: transparent;
-                    box-shadow: none;
-                }
-                .sora-modal-img-large {
-                    max-width: 100vw;
-                    max-height: 98vh;
-                    width: auto;
-                    height: auto;
-                    border-radius: 0;
+                .sora-modal-content img {
+                    max-width: 70vw;
+                    max-height: 60vh;
+                    border-radius: 8px;
                     margin-bottom: 16px;
-                    background: #181818;
-                    display: block;
                 }
                 .sora-modal-text {
                     color: #fff;
@@ -214,28 +191,6 @@ export default function BlogFiltering() {
                     color: #fff;
                     font-size: 2rem;
                     cursor: pointer;
-                }
-            `}</style>
-            <style jsx global>{`
-                body.sora-modal-open footer,
-                body.sora-modal-open .footer,
-                body.sora-modal-open [class*="footer"] {
-                    display: none !important;
-                }
-                body.sora-modal-open {
-                    padding-bottom: 0 !important;
-                    margin-bottom: 0 !important;
-                    background: #181818 !important;
-                }
-                body.sora-modal-open #__next {
-                    padding-bottom: 0 !important;
-                    margin-bottom: 0 !important;
-                    background: #181818 !important;
-                }
-                html, body, #__next {
-                    height: 100%;
-                    min-height: 100%;
-                    background: #181818 !important;
                 }
             `}</style>
         </div>
