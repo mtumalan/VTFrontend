@@ -6,16 +6,14 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile      # <-- point at your production Dockerfile
     container_name: nextjs_frontend
     environment:
       - NEXT_PUBLIC_BACKEND_URL=http://django_backend_vt:8000
     ports:
       - "3000:3000"
-    volumes:
-      - .:/app
-      - /app/node_modules
-    command: yarn dev
+    # No volumes: the code is baked into the image at build time
+    command: yarn start             # <-- run the production server
     networks:
       - vt_shared_network
 
