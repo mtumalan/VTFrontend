@@ -8,15 +8,15 @@ export default function AiChat() {
 	const handleFileChange = (e) => setFile(e.target.files[0]);
 	const handleSend = () => {
 		const modelId = [
-			"0",
-			"1",
-			"2",
-			"3",
-			"4",
-			"5",
-			"6",
-			"7",
-			"8"
+			"Modelo 1",
+			"Modelo 2",
+			"Modelo 3",
+			"Modelo 4",
+			"Modelo 5",
+			"Modelo 6",
+			"Modelo 7",
+			"Modelo 8",
+			"Modelo 9"
 		].indexOf(selectedModel);
 
 		if (!file) {
