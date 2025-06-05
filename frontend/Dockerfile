@@ -1,21 +1,21 @@
-# Dockerfile.dev para desarrollo con hot reload en Next.js
-FROM node:18-alpine
+# ─── Etapa 1: construir la app ─────────────────────────────────────────────
+FROM node:18-alpine AS builder
 WORKDIR /app
 
-# Copia solo package.json y yarn.lock para instalar dependencias
 COPY package.json yarn.lock ./
-
-# Instala dependencias
+# Cambiamos --frozen-lockfile por yarn install normal
 RUN yarn install
 
-# Copia el resto del código (opcional, para build inicial, pero será sobreescrito por el volumen)
 COPY . .
+RUN yarn build
 
-# Expone el puerto 3000
+# ─── Etapa 2: servir la app ─────────────────────────────────────────────────
+FROM node:18-alpine AS runner
+WORKDIR /app
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/node_modules ./node_modules
 EXPOSE 3000
-
-# Desactiva la telemetría de Next.js
 ENV NEXT_TELEMETRY_DISABLED=1
-
-# Comando por defecto: modo desarrollo
-CMD ["yarn", "dev"]
+CMD ["yarn", "start"]

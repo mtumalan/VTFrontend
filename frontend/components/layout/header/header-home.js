@@ -41,10 +41,6 @@ export default function HeaderHome() {
 									<li>
 										<Link href={"/gallery"}> Gallery </Link>
 									</li>
-									<li>
-										<Link href={"about-us"}> My photos </Link>
-									</li>
-
 								</ul>
 							</div>
 						</nav>
