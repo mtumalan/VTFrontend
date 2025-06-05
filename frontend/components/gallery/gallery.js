@@ -11,8 +11,11 @@ export default function Gallery() {
 	useEffect(() => {
 		fetch(INTERFERENCE_JOBS_ENDPOINT)
 			.then((res) => res.json())
-			.then((data) => setimages(data))
-			.catch((err) => console.error(err));
+			.then((data) => setimages(Array.isArray(data) ? data : []))
+			.catch((err) => {
+				console.error(err);
+				setimages([]);
+			});
 	}, []);
 
 	const openModal = (image) => {
@@ -29,7 +32,7 @@ export default function Gallery() {
 		<div className="fugu--blog-filtering dark-version row">
 			<div className="col-12">
 				<div className="fugu--portfolio-wrap row" id="fugu--two-column">
-					{images.map((image, idx) => (
+					{Array.isArray(images) && images.map((image, idx) => (
 						<div
 							key={image.id || idx}
 							className={`collection-grid-item wow fadeInUpX col-lg-4 col-sm-12`}
