@@ -11546,3 +11546,172 @@ circle {
 .fugu-testimonial-slider2 .slick-initialized .slick-slide {
 	padding: 0 15px;
 }
+
+
+/* --------------------------------------------------
+   Global background and centering
+   -------------------------------------------------- */
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background: linear-gradient(135deg, #1f0e4f, #1c0522); */
+}
+
+/* --------------------------------------------------
+   The “card” or “panel” that holds the form
+   -------------------------------------------------- */
+.register-card {
+  background-color: rgba(24, 24, 31, 0.9);
+  border-radius: 8px;
+
+  /* ↑ Increase the padding to make the card taller and give more breathing room */
+  /* old: padding: 40px 30px; */
+  padding: 50px 40px;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+
+  /* ↑ Increase max-width to make the card wider */
+  /* old: max-width: 400px; */
+  max-width: 600px;
+  width: 100%;
+  color: #ffffff;
+  backdrop-filter: blur(8px);
+}
+
+/* --------------------------------------------------
+   Title styling
+   -------------------------------------------------- */
+.register-title {
+  /* ↑ Bump up the font-size so the heading is more prominent */
+  /* old: font-size: 1.75rem; */
+  font-size: 2rem;
+  margin-bottom: 24px;
+  text-align: center;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* --------------------------------------------------
+   Each form field and its container
+   -------------------------------------------------- */
+.register-form .form-field {
+  margin-bottom: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The inputs themselves */
+.register-form .input {
+  width: 100%;
+
+  /* ↑ Increase padding inside each input to make them taller */
+  /* old: padding: 12px 16px; */
+  padding: 14px 18px;
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+
+  /* ↑ Slightly larger font for easier readability */
+  /* old: font-size: 1rem; */
+  font-size: 1.05rem;
+
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.register-form .input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Focus state */
+.register-form .input:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #906cff;
+}
+
+/* Error state */
+.register-form .error-input {
+  border-color: #ff5e6d !important;
+}
+
+/* --------------------------------------------------
+   Error message text
+   -------------------------------------------------- */
+.error-message {
+  color: #ff5e6d;
+  /* old: font-size: 0.875rem; */
+  font-size: 0.9rem;
+  margin-top: 4px;
+  position: absolute;
+  bottom: -18px;
+  left: 0;
+}
+
+/* If the server returns an error (e.g. “username already taken”) */
+.server-error-message {
+  color: #ff5e6d;
+  /* old: font-size: 0.9rem; */
+  font-size: 0.95rem;
+  text-align: center;
+  display: block;
+  margin-top: -4px;
+}
+
+/* --------------------------------------------------
+   The Register/Login button
+   -------------------------------------------------- */
+.btn-register {
+  width: 100%;
+
+  /* ↑ Make the button taller for a more substantial click target */
+  /* old: padding: 12px 0; */
+  padding: 14px 0;
+
+  border: none;
+  border-radius: 6px;
+
+  /* ↑ Slightly larger text on the button */
+  /* old: font-size: 1rem; */
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #ffffff;
+  cursor: pointer;
+
+  /* gradient background */
+  background: linear-gradient(90deg, #ff00d6, #4e00ff);
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-register:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+.btn-register:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* --------------------------------------------------
+   Mobile responsiveness tweaks (optional)
+   -------------------------------------------------- */
+@media (max-width: 480px) {
+  .register-card {
+    /* slightly smaller on narrow screens, but still larger than before */
+    padding: 40px 25px;
+  }
+  .register-title {
+    /* old: font-size: 1.5rem; */
+    font-size: 1.75rem;
+    margin-bottom: 20px;
+  }
+  .btn-register {
+    /* old: font-size: 0.95rem; */
+    font-size: 1rem;
+  }
+}

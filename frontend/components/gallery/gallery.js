@@ -1,113 +1,202 @@
 // pages/gallery.jsx
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useAuth } from "../../contexts/AuthContext";
 import Link from "next/link";
+
+import { useAuth } from "../../contexts/AuthContext";
 import { INTERFERENCE_JOBS_ENDPOINT } from "../../utils/api";
-import { readCookie } from "../../utils/cookies"; // Adjust the import path as needed
+import { readCookie } from "../../utils/cookies";
 
 export default function GalleryPage() {
   const { isLoggedIn } = useAuth();
-  const router = useRouter();
+  const router         = useRouter();
 
-  const [images, setImages] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  /* ─── pagination state ───────────────────────────────────────────── */
+  const [jobs,  setJobs]  = useState([]);
+  const [count, setCount] = useState(0);
+  const [next,  setNext]  = useState(null);
+  const [prev,  setPrev]  = useState(null);
+  const [page,  setPage]  = useState(1);
 
-  // If not logged in, redirect
+  /* misc state */
+  const [loading,  setLoading]  = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [modalJob, setModalJob] = useState(null);
+
+  /* ─── redirect if not logged in ──────────────────────────────────── */
   useEffect(() => {
-    if (isLoggedIn === false) {
-      router.replace("/login");
-    }
+    if (isLoggedIn === false) router.replace("/login");
   }, [isLoggedIn, router]);
 
-  // Once isLoggedIn === true, fetch the jobs
+  /* ─── fetch DONE jobs for the current page ───────────────────────── */
   useEffect(() => {
     if (!isLoggedIn) return;
 
-    fetch(INTERFERENCE_JOBS_ENDPOINT, {
-      method: "GET",
+    setLoading(true);  setErrorMsg("");
+
+    fetch(`${INTERFERENCE_JOBS_ENDPOINT}?status=DONE&page=${page}`, {
       credentials: "include",
-      headers: { "Content-Type": "application/json", "X-CSRFToken": readCookie("csrftoken") }
+      headers: { "Content-Type": "application/json",
+                 "X-CSRFToken": readCookie("csrftoken") },
     })
-      .then((res) => {
-        if (res.status === 403) {
-          router.replace("/login");
-          return null;
-        }
-        return res.json();
+      .then(r => (r.status === 403 ? (router.replace("/login"), null) : r.json()))
+      .then(data => {
+        if (!data) return;
+        setJobs(Array.isArray(data.results) ? data.results : []);
+        setCount(data.count || 0);
+        setNext(data.next);  setPrev(data.previous);
       })
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setImages(data);
-        } else {
-          setImages([]);
-        }
+      .catch(err => {
+        console.error(err);
+        setErrorMsg("Failed to load images.");
+        setJobs([]); setCount(0); setNext(null); setPrev(null);
       })
-      .catch((err) => {
-        console.error("Error loading jobs:", err);
-        setImages([]);
-      });
-  }, [isLoggedIn, router]);
+      .finally(() => setLoading(false));
+  }, [isLoggedIn, page, router]);
 
-  if (isLoggedIn !== true) {
-    // Don’t render the gallery until we know we’re logged in
-    return null;
-  }
+  const toPrev = () => prev && setPage(p => Math.max(p - 1, 1));
+  const toNext = () => next && setPage(p => p + 1);
+  const pages  = Math.max(Math.ceil(count / 9), 1);
 
+  if (isLoggedIn !== true) return null;           // wait for auth check
+
+  /* ─── layout: flex column so the body fills 100 vh ───────────────── */
   return (
-    <div className="fugu--blog-filtering dark-version row">
-      <div className="col-12">
-        <div className="fugu--portfolio-wrap row" id="fugu--two-column">
-          {images.map((image, idx) => (
-            <div
-              key={image.id || idx}
-              className={`collection-grid-item wow fadeInUpX col-lg-4 col-sm-12`}
-              data-wow-delay={`${idx * 0.1}s`}
-            >
-              <div className="fugu--blog-wrap">
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      minHeight: "100vh",
+      padding: 24,
+      color: "#fff",
+    }}>
+      <h1 style={{ textAlign: "center", marginBottom: 24 }}>Gallery</h1>
+
+      {/* Main content block grows to fill the viewport */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        {loading ? (
+          <Centered>Loading page {page}…</Centered>
+        ) : errorMsg ? (
+          <Centered style={{ color: "#ff5e6d" }}>{errorMsg}</Centered>
+        ) : jobs.length === 0 ? (
+          <Centered>No images on this page.</Centered>
+        ) : (
+          <div style={{ margin: "0 auto", width: "100%", maxWidth: 1280 }}>
+            <div className="row fugu--portfolio-wrap" id="fugu--two-column">
+              {jobs.map((job, i) => (
                 <div
-                  className="fugu--blog-thumb"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setModalOpen(image)}
+                  key={job.id}
+                  className="collection-grid-item col-lg-4 col-sm-12 wow fadeInUpX"
+                  data-wow-delay={`${i * 0.05}s`}
+                  style={{ marginBottom: 24 }}
                 >
-                  <Link href={image.link || "#"} onClick={(e) => e.preventDefault()}>
-                    <img src={image.input_image} alt={image.id || ""} />
-                  </Link>
+                  <div className="fugu--blog-wrap">
+                    <div
+                      className="fugu--blog-thumb"
+                      style={{ height: 250, overflow: "hidden", cursor: "pointer" }}
+                      onClick={() => setModalJob(job)}
+                    >
+                      <Link href={job.mask_image || "#"} onClick={e=>e.preventDefault()}>
+                        <img
+                          src={job.mask_image}
+                          alt={`Job ${job.id}`}
+                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        />
+                      </Link>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
+          </div>
+        )}
+
+        {/* pagination */}
+        <div style={{
+          display: "flex", justifyContent: "center", alignItems: "center",
+          gap: 12, marginTop: 24,
+        }}>
+          <PagerBtn disabled={!prev} onClick={toPrev}>←</PagerBtn>
+          <span style={{ color: "#aaa" }}>
+            Page {page} of {pages}
+          </span>
+          <PagerBtn disabled={!next} onClick={toNext}>→</PagerBtn>
         </div>
       </div>
 
-      {modalOpen && (
-        <div className="gallery-modal-overlay" onClick={() => setModalOpen(null)}>
+      {/* modal preview (input & result) */}
+      {modalJob && (
+        <div
+          className="gallery-modal-overlay"
+          onClick={() => setModalJob(null)}
+          style={{
+            position: "fixed", inset: 0, background: "rgba(0,0,0,.8)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: 20, zIndex: 1000,
+          }}
+        >
           <div
-            className="gallery-modal-content"
-            onClick={(e) => e.stopPropagation()}
+            onClick={e=>e.stopPropagation()}
+            style={{
+              background: "#181828", borderRadius: 8, padding: 20,
+              maxWidth: "90vw", display: "flex", flexDirection: "column", alignItems: "center",
+            }}
           >
-            <button onClick={() => setModalOpen(null)} className="gallery-modal-close">
-              &times;
-            </button>
+            <button
+              onClick={() => setModalJob(null)}
+              style={{ alignSelf: "flex-end", fontSize: "1.5rem",
+                       background: "none", border: "none",
+                       color: "#fff", cursor: "pointer" }}
+            >&times;</button>
+
             <img
-              src={modalOpen.input_image}
-              alt="Input"
-              className="gallery-modal-image"
+              src={modalJob.mask_image}
+              alt="Result"
+              style={{ maxWidth: "100%", maxHeight: "40vh", objectFit: "contain" }}
             />
-            {modalOpen.mask_image && (
+            {modalJob.input_image && (
               <img
-                src={modalOpen.mask_image}
-                alt="Mask"
-                className="gallery-modal-image"
-                style={{ marginLeft: "16px" }}
+                src={modalJob.input_image}
+                alt="Input"
+                style={{ maxWidth: "100%", maxHeight: "40vh",
+                         objectFit: "contain", marginTop: 12 }}
               />
             )}
-            <h3 className="gallery-modal-model">{modalOpen.model}</h3>
-            <p className="gallery-modal-user">{modalOpen.user}</p>
+            <h3 style={{ marginTop: 12 }}>
+              {modalJob.vision_model_details?.name || "Unknown model"}
+            </h3>
+            <p style={{ color: "#aaa" }}>Uploaded by: {modalJob.user_username}</p>
           </div>
         </div>
       )}
     </div>
+  );
+}
+
+/* ─── small helpers ─────────────────────────────────────────────────── */
+function Centered({ children, style }) {
+  return (
+    <div style={{
+      flex: 1, display: "flex", justifyContent: "center",
+      alignItems: "center", minHeight: "40vh", fontSize: "1.25rem",
+      ...style,
+    }}>
+      {children}
+    </div>
+  );
+}
+
+function PagerBtn({ disabled, children, ...rest }) {
+  return (
+    <button
+      disabled={disabled}
+      style={{
+        padding: "8px 16px", borderRadius: 4, border: "none",
+        background: disabled ? "#555" : "#4e00ff",
+        color: "#fff", cursor: disabled ? "not-allowed" : "pointer",
+      }}
+      {...rest}
+    >
+      {children}
+    </button>
   );
 }
