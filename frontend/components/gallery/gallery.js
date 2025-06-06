@@ -3,48 +3,35 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-import { useAuth } from "../../contexts/AuthContext";
 import { INTERFERENCE_JOBS_ENDPOINT } from "../../utils/api";
-import { readCookie } from "../../utils/cookies";
 
 export default function GalleryPage() {
-  const { isLoggedIn } = useAuth();
-  const router         = useRouter();
+  const router = useRouter();
 
-  /* ─── pagination state ───────────────────────────────────────────── */
+  /* ─── pagination state ─────────────────────────────────────────── */
   const [jobs,  setJobs]  = useState([]);
   const [count, setCount] = useState(0);
   const [next,  setNext]  = useState(null);
   const [prev,  setPrev]  = useState(null);
   const [page,  setPage]  = useState(1);
 
-  /* misc state */
+  /* misc UI state */
   const [loading,  setLoading]  = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
   const [modalJob, setModalJob] = useState(null);
 
-  /* ─── redirect if not logged in ──────────────────────────────────── */
+  /* ─── fetch DONE jobs for the current page ─────────────────────── */
   useEffect(() => {
-    if (isLoggedIn === false) router.replace("/login");
-  }, [isLoggedIn, router]);
+    setLoading(true);
+    setErrorMsg("");
 
-  /* ─── fetch DONE jobs for the current page ───────────────────────── */
-  useEffect(() => {
-    if (!isLoggedIn) return;
-
-    setLoading(true);  setErrorMsg("");
-
-    fetch(`${INTERFERENCE_JOBS_ENDPOINT}?status=DONE&page=${page}`, {
-      credentials: "include",
-      headers: { "Content-Type": "application/json",
-                 "X-CSRFToken": readCookie("csrftoken") },
-    })
-      .then(r => (r.status === 403 ? (router.replace("/login"), null) : r.json()))
+    fetch(`${INTERFERENCE_JOBS_ENDPOINT}?status=DONE&page=${page}`)
+      .then(r => r.json())
       .then(data => {
-        if (!data) return;
         setJobs(Array.isArray(data.results) ? data.results : []);
         setCount(data.count || 0);
-        setNext(data.next);  setPrev(data.previous);
+        setNext(data.next);
+        setPrev(data.previous);
       })
       .catch(err => {
         console.error(err);
@@ -52,15 +39,13 @@ export default function GalleryPage() {
         setJobs([]); setCount(0); setNext(null); setPrev(null);
       })
       .finally(() => setLoading(false));
-  }, [isLoggedIn, page, router]);
+  }, [page]);
 
   const toPrev = () => prev && setPage(p => Math.max(p - 1, 1));
   const toNext = () => next && setPage(p => p + 1);
   const pages  = Math.max(Math.ceil(count / 9), 1);
 
-  if (isLoggedIn !== true) return null;           // wait for auth check
-
-  /* ─── layout: flex column so the body fills 100 vh ───────────────── */
+  /* ─── layout: flex column so the body fills 100 vh ─────────────── */
   return (
     <div style={{
       display: "flex",
@@ -95,7 +80,7 @@ export default function GalleryPage() {
                       style={{ height: 250, overflow: "hidden", cursor: "pointer" }}
                       onClick={() => setModalJob(job)}
                     >
-                      <Link href={job.mask_image || "#"} onClick={e=>e.preventDefault()}>
+                      <Link href={job.mask_image || "#"} onClick={e => e.preventDefault()}>
                         <img
                           src={job.mask_image}
                           alt={`Job ${job.id}`}
@@ -135,7 +120,7 @@ export default function GalleryPage() {
           }}
         >
           <div
-            onClick={e=>e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             style={{
               background: "#181828", borderRadius: 8, padding: 20,
               maxWidth: "90vw", display: "flex", flexDirection: "column", alignItems: "center",
@@ -143,9 +128,11 @@ export default function GalleryPage() {
           >
             <button
               onClick={() => setModalJob(null)}
-              style={{ alignSelf: "flex-end", fontSize: "1.5rem",
-                       background: "none", border: "none",
-                       color: "#fff", cursor: "pointer" }}
+              style={{
+                alignSelf: "flex-end", fontSize: "1.5rem",
+                background: "none", border: "none",
+                color: "#fff", cursor: "pointer",
+              }}
             >&times;</button>
 
             <img
@@ -157,14 +144,18 @@ export default function GalleryPage() {
               <img
                 src={modalJob.input_image}
                 alt="Input"
-                style={{ maxWidth: "100%", maxHeight: "40vh",
-                         objectFit: "contain", marginTop: 12 }}
+                style={{
+                  maxWidth: "100%", maxHeight: "40vh",
+                  objectFit: "contain", marginTop: 12,
+                }}
               />
             )}
             <h3 style={{ marginTop: 12 }}>
               {modalJob.vision_model_details?.name || "Unknown model"}
             </h3>
-            <p style={{ color: "#aaa" }}>Uploaded by: {modalJob.user_username}</p>
+            <p style={{ color: "#aaa" }}>
+              Uploaded by: {modalJob.user_username}
+            </p>
           </div>
         </div>
       )}
@@ -172,7 +163,7 @@ export default function GalleryPage() {
   );
 }
 
-/* ─── small helpers ─────────────────────────────────────────────────── */
+/* ─── small helpers ──────────────────────────────────────────────── */
 function Centered({ children, style }) {
   return (
     <div style={{
