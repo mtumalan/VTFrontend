@@ -29,32 +29,48 @@ export default function Gallery() {
 	};
 
 	return (
-		<div className="fugu--blog-filtering dark-version row">
+		<div className="fugu--blog-filtering dark-version row" style={{ minHeight: "60vh" }}>
 			<div className="col-12">
-				<div className="fugu--portfolio-wrap row" id="fugu--two-column">
-					{Array.isArray(images) && images.map((image, idx) => (
-						<div
-							key={image.id || idx}
-							className={`collection-grid-item wow fadeInUpX col-lg-4 col-sm-12`}
-							data-wow-delay={`${idx * 0.1}s`}
-						>
-							<div className="fugu--blog-wrap">
-								<div
-									className="fugu--blog-thumb"
-									style={{ cursor: "pointer" }}
-									onClick={() => openModal(image)}
-								>
-									<Link
-										href={image.link || "single-blog-dark"}
-										onClick={(e) => e.preventDefault()}
+				{Array.isArray(images) && images.length === 0 ? (
+					<div style={{
+						width: "100%",
+						padding: "48px 0",
+						textAlign: "center",
+						color: "#fff",
+						background: "transparent", // <-- sin fondo
+						borderRadius: 0,
+						fontSize: 22,
+						fontWeight: 600,
+						margin: "40px 0"
+					}}>
+						No hay imágenes
+					</div>
+				) : (
+					<div className="fugu--portfolio-wrap row" id="fugu--two-column">
+						{Array.isArray(images) && images.map((image, idx) => (
+							<div
+								key={image.id || idx}
+								className={`collection-grid-item wow fadeInUpX col-lg-4 col-sm-12`}
+								data-wow-delay={`${idx * 0.1}s`}
+							>
+								<div className="fugu--blog-wrap">
+									<div
+										className="fugu--blog-thumb"
+										style={{ cursor: "pointer" }}
+										onClick={() => openModal(image)}
 									>
-										<img src={image.input_image} alt="" />
-									</Link>
+										<Link
+											href={image.link || "single-blog-dark"}
+											onClick={(e) => e.preventDefault()}
+										>
+											<img src={image.input_image} alt="" />
+										</Link>
+									</div>
 								</div>
 							</div>
-						</div>
-					))}
-				</div>
+						))}
+					</div>
+				)}
 			</div>
 
 			{modalOpen && selectedImage && (
