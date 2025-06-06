@@ -121,18 +121,6 @@ export default function FooterHomeFive() {
 						<div className="col-lg-6">
 							<p>&copy; Copyright 2022, All Rights Reserved by Mthemeus</p>
 						</div>
-						<div className="col-lg-6">
-							<div className="fugu--footer-menu">
-								<ul>
-									<li>
-										<Link href="#">Terms</Link>
-									</li>
-									<li>
-										<Link href="#"> Privacy Policy</Link>
-									</li>
-								</ul>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>

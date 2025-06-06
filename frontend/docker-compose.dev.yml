@@ -6,7 +6,7 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: nextjs_frontend
     environment:
       - NEXT_PUBLIC_BACKEND_URL=http://django_backend_vt:8000
@@ -16,9 +16,3 @@ services:
       - .:/app
       - /app/node_modules
     command: yarn dev
-    networks:
-      - vt_shared_network
-
-networks:
-  vt_shared_network:
-    external: true
