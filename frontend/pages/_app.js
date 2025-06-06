@@ -8,12 +8,14 @@ import "swiper/css";
 import "swiper/css/effect-cards";
 import Preloader from "../components/common/preloader/preloader";
 import ScrollTop from "../components/common/scroll-top";
+import { AuthProvider } from "../contexts/AuthContext";
 import "../styles/css/app.css";
 import "../styles/css/main.css";
 
 function MyApp({ Component, pageProps }) {
 	return (
 		<>
+		<AuthProvider>
 			<Head>
 				{/* common title */}
 				<title>fugu</title>
@@ -24,6 +26,7 @@ function MyApp({ Component, pageProps }) {
 
 			<ScrollTop />
 			<Preloader />
+		</AuthProvider>
 		</>
 	);
 }

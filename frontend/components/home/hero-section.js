@@ -26,7 +26,7 @@ export default function HeroSection() {
               analyze and visualize possible structural failures.
             </p>
             <div className="d-flex justify-content-center gap-3 mb-5 mt-5">
-              <Link href="/upload" legacyBehavior>
+              <Link href="/ai-chat" legacyBehavior>
                 <a className="fugu--btn bg-gray">Upload Photo</a>
               </Link>
               <Link href="/gallery" legacyBehavior>

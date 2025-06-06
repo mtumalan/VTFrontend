@@ -1,86 +1,111 @@
-/* eslint-disable @next/next/no-img-element */
-import Link from "next/link";
+// pages/gallery.jsx
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useAuth } from "../../contexts/AuthContext";
+import Link from "next/link";
 import { INTERFERENCE_JOBS_ENDPOINT } from "../../utils/api";
 
-export default function Gallery() {
-	const [images, setimages] = useState([]);
-	const [modalOpen, setModalOpen] = useState(false);
-	const [selectedImage, setSelectedImage] = useState(null);
+export default function GalleryPage() {
+  const { isLoggedIn } = useAuth();
+  const router = useRouter();
 
-	useEffect(() => {
-		fetch(INTERFERENCE_JOBS_ENDPOINT)
-			.then((res) => res.json())
-			.then((data) => setimages(Array.isArray(data) ? data : []))
-			.catch((err) => {
-				console.error(err);
-				setimages([]);
-			});
-	}, []);
+  const [images, setImages] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
-	const openModal = (image) => {
-		setSelectedImage(image);
-		setModalOpen(true);
-	};
+  // If not logged in, redirect
+  useEffect(() => {
+    if (isLoggedIn === false) {
+      router.replace("/login");
+    }
+  }, [isLoggedIn, router]);
 
-	const closeModal = () => {
-		setModalOpen(false);
-		setSelectedImage(null);
-	};
+  // Once isLoggedIn === true, fetch the jobs
+  useEffect(() => {
+    if (!isLoggedIn) return;
 
-	return (
-		<div className="fugu--blog-filtering dark-version row">
-			<div className="col-12">
-				<div className="fugu--portfolio-wrap row" id="fugu--two-column">
-					{Array.isArray(images) && images.map((image, idx) => (
-						<div
-							key={image.id || idx}
-							className={`collection-grid-item wow fadeInUpX col-lg-4 col-sm-12`}
-							data-wow-delay={`${idx * 0.1}s`}
-						>
-							<div className="fugu--blog-wrap">
-								<div
-									className="fugu--blog-thumb"
-									style={{ cursor: "pointer" }}
-									onClick={() => openModal(image)}
-								>
-									<Link
-										href={image.link || "single-blog-dark"}
-										onClick={(e) => e.preventDefault()}
-									>
-										<img src={image.input_image} alt="" />
-									</Link>
-								</div>
-							</div>
-						</div>
-					))}
-				</div>
-			</div>
+    fetch(INTERFERENCE_JOBS_ENDPOINT, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => {
+        if (res.status === 403) {
+          router.replace("/login");
+          return null;
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setImages(data);
+        } else {
+          setImages([]);
+        }
+      })
+      .catch((err) => {
+        console.error("Error loading jobs:", err);
+        setImages([]);
+      });
+  }, [isLoggedIn, router]);
 
-			{modalOpen && selectedImage && (
-				<div className="gallery-modal-overlay" onClick={closeModal}>
-					<div className="gallery-modal-content" onClick={(e) => e.stopPropagation()}>
-						<button onClick={closeModal} className="gallery-modal-close">
-							&times;
-						</button>
-						<img src={selectedImage.input_image} alt="Input" className="gallery-modal-image" />
-						{selectedImage.mask_image && (
-							<img
-								src={selectedImage.mask_image}
-								alt="Mask"
-								className="gallery-modal-image"
-								style={{ marginLeft: "16px" }}
-							/>
-						)}
-						<h3 className="gallery-modal-model">
-							{selectedImage.model}
-						</h3>
-						<p className="gallery-modal-user">
-							{selectedImage.user}
-						</p>
-					</div>
-				</div>
-			)}
-		</div>
-	);
+  if (isLoggedIn !== true) {
+    // Don’t render the gallery until we know we’re logged in
+    return null;
+  }
+
+  return (
+    <div className="fugu--blog-filtering dark-version row">
+      <div className="col-12">
+        <div className="fugu--portfolio-wrap row" id="fugu--two-column">
+          {images.map((image, idx) => (
+            <div
+              key={image.id || idx}
+              className={`collection-grid-item wow fadeInUpX col-lg-4 col-sm-12`}
+              data-wow-delay={`${idx * 0.1}s`}
+            >
+              <div className="fugu--blog-wrap">
+                <div
+                  className="fugu--blog-thumb"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setModalOpen(image)}
+                >
+                  <Link href={image.link || "#"} onClick={(e) => e.preventDefault()}>
+                    <img src={image.input_image} alt={image.id || ""} />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {modalOpen && (
+        <div className="gallery-modal-overlay" onClick={() => setModalOpen(null)}>
+          <div
+            className="gallery-modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button onClick={() => setModalOpen(null)} className="gallery-modal-close">
+              &times;
+            </button>
+            <img
+              src={modalOpen.input_image}
+              alt="Input"
+              className="gallery-modal-image"
+            />
+            {modalOpen.mask_image && (
+              <img
+                src={modalOpen.mask_image}
+                alt="Mask"
+                className="gallery-modal-image"
+                style={{ marginLeft: "16px" }}
+              />
+            )}
+            <h3 className="gallery-modal-model">{modalOpen.model}</h3>
+            <p className="gallery-modal-user">{modalOpen.user}</p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
