@@ -15,4 +15,4 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    command: yarn dev
+    command: yarn start:https
