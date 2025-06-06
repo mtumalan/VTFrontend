@@ -1,19 +1,26 @@
-// contexts/AuthContext.js
-import { createContext, useContext, useEffect, useState } from "react";
-import { useRouter } from "next/router";
-
-// Make sure we import **all three**:
 import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
+import { useRouter } from "next/router";
+import {
+  CSRF_ENDPOINT,
   LOGIN_ENDPOINT,
   CURRENT_USER_URL,
   LOGOUT_ENDPOINT,
 } from "../utils/api";
 
-const AuthContext = createContext({
-  user: null,            // { id, username, email } or null
-  isLoggedIn: false,     // boolean
-  login: async (data) => {},
-  logout: async () => {},
+
+export const AuthContext = createContext({
+  user: null,           // { id, username, email } or null
+  isLoggedIn: false,    // boolean flag (user !== null)
+  loading: true,        // true while we’re still checking “/current-user/”
+  login: async () => {},  // login({username,password})
+  logout: async () => {}, // logout()
 });
 
 export function AuthProvider({ children }) {
@@ -21,14 +28,29 @@ export function AuthProvider({ children }) {
   const [loadingUser, setLoadingUser] = useState(true);
   const router = useRouter();
 
-  // ① On mount, check /api/users/me/
+  const getCsrfTokenFromCookie = () => {
+    if (typeof document === "undefined") return "";
+    const match = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
+    return match ? match[1] : "";
+  };
+
   useEffect(() => {
-    async function fetchCurrentUser() {
+    let isMounted = true;
+
+    async function initializeSession() {
       try {
-        const res = await fetch(CURRENT_USER_URL, {
+        await fetch(CSRF_ENDPOINT, {
           method: "GET",
           credentials: "include",
         });
+
+        const res = await fetch(CURRENT_USER_URL, {
+          method: "GET",
+          credentials: "include", // ensures the browser sends any `sessionid` cookie
+        });
+
+        if (!isMounted) return;
+
         if (res.ok) {
           const data = await res.json();
           setUser(data);
@@ -36,76 +58,83 @@ export function AuthProvider({ children }) {
           setUser(null);
         }
       } catch (err) {
-        console.error("Error fetching current user:", err);
-        setUser(null);
+        console.error("Error during session initialization:", err);
+        if (isMounted) setUser(null);
       } finally {
-        setLoadingUser(false);
+        if (isMounted) setLoadingUser(false);
       }
     }
-    fetchCurrentUser();
+
+    initializeSession();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  // ② login()
-  const login = async ({ username, password }) => {
-    try {
-      const res = await fetch(LOGIN_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include", // tells the browser to store sessionid cookie
-        body: JSON.stringify({ username, password }),
-      });
-      if (!res.ok) {
-        const errJson = await res.json();
-        throw new Error(errJson.detail || "Login failed");
-      }
-      // On success, sessionid cookie is now set. Re-fetch /me/
-      const meRes = await fetch(CURRENT_USER_URL, {
-        method: "GET",
-        credentials: "include",
-      });
-      if (meRes.ok) {
-        const userData = await meRes.json();
-        setUser(userData);
-        return;
-      } else {
-        throw new Error("Could not fetch user after login");
-      }
-    } catch (err) {
-      console.error("Login error:", err);
-      throw err;
-    }
-  };
+  const login = useCallback(async ({ username, password }) => {
+    const csrftoken = getCsrfTokenFromCookie();
 
-  // ③ logout()
-  const logout = async () => {
+    const res = await fetch(LOGIN_ENDPOINT, {
+      method: "POST",
+      credentials: "include", // ← browser will store `sessionid` if login succeeds
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken,
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (!res.ok) {
+      let message = "Login failed";
+      try {
+        const errObj = await res.json();
+        message = errObj.detail || message;
+      } catch {}
+      throw new Error(message);
+    }
+
+    const meRes = await fetch(CURRENT_USER_URL, {
+      method: "GET",
+      credentials: "include",
+    });
+    if (!meRes.ok) {
+      throw new Error("Failed to fetch user after login");
+    }
+    const userData = await meRes.json();
+    setUser(userData);
+  }, []);
+
+  const logout = useCallback(async () => {
+    const csrftoken = getCsrfTokenFromCookie();
+
     try {
       await fetch(LOGOUT_ENDPOINT, {
         method: "POST",
         credentials: "include",
+        headers: {
+          "X-CSRFToken": csrftoken,
+        },
       });
     } catch (err) {
-      console.warn("Logout request error (ignored):", err);
+      console.warn("Logout request failed (ignored):", err);
     } finally {
       setUser(null);
       router.push("/login");
     }
-  };
+  }, [router]);
 
-  const value = {
-    user,
-    isLoggedIn: Boolean(user),
-    login,
-    logout,
-  };
-
-  // **** CHANGE #1: Don’t return null for the entire tree.  
-  // Instead, render children but pass along loadingUser if needed.
-  // For simplicity, I’ll render children immediately; components can check isLoggedIn:
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      user,
+      isLoggedIn: Boolean(user),
+      loading: loadingUser,
+      login,
+      logout,
+    }),
+    [user, loadingUser, login, logout]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
