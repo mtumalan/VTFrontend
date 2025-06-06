@@ -8,6 +8,7 @@ import {
   REGISTER_ENDPOINT,
 } from "../../utils/api";
 import { useAuth } from "../../contexts/AuthContext";
+import { readCookie } from "../../utils/cookies"; // Adjust the import path as needed
 
 export default function LoginSection() {
   const [isRegister, setIsRegister] = useState(false);
@@ -57,11 +58,11 @@ export default function LoginSection() {
 
         const regRes = await fetch(REGISTER_ENDPOINT, {
           method: "POST",
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": csrfToken,
+            "X-CSRFToken": readCookie("csrftoken"),
           },
-          credentials: "include",
           body: JSON.stringify(registerPayload),
         });
 
@@ -88,7 +89,6 @@ export default function LoginSection() {
             username: data.username,
             password: data.password,
           });
-          alert("Registration successful! Redirecting…");
           router.push("/gallery");
         } catch (loginErr) {
           // If login after register fails, show that error
@@ -101,7 +101,6 @@ export default function LoginSection() {
             username: data.username,
             password: data.password,
           });
-          alert("Login successful! Redirecting…");
           router.push("/gallery");
         } catch (loginErr) {
           setApiError(loginErr.message || "Login failed");

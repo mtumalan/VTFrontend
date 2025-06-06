@@ -13,6 +13,7 @@ import {
   CURRENT_USER_URL,
   LOGOUT_ENDPOINT,
 } from "../utils/api";
+import { readCookie } from "../utils/cookies"; // Assuming you have a utility to read cookies
 
 
 export const AuthContext = createContext({
@@ -42,11 +43,13 @@ export function AuthProvider({ children }) {
         await fetch(CSRF_ENDPOINT, {
           method: "GET",
           credentials: "include",
+          headers: { "Content-Type": "application/json", "X-CSRFToken": readCookie("csrftoken") }
         });
 
         const res = await fetch(CURRENT_USER_URL, {
           method: "GET",
           credentials: "include", // ensures the browser sends any `sessionid` cookie
+          headers: { "Content-Type": "application/json", "X-CSRFToken": readCookie("csrftoken") }
         });
 
         if (!isMounted) return;
@@ -77,10 +80,7 @@ export function AuthProvider({ children }) {
     const res = await fetch(LOGIN_ENDPOINT, {
       method: "POST",
       credentials: "include", // ← browser will store `sessionid` if login succeeds
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrftoken,
-      },
+      headers: { "Content-Type": "application/json", "X-CSRFToken": readCookie("csrftoken") },
       body: JSON.stringify({ username, password }),
     });
 
@@ -96,6 +96,7 @@ export function AuthProvider({ children }) {
     const meRes = await fetch(CURRENT_USER_URL, {
       method: "GET",
       credentials: "include",
+      headers: { "Content-Type": "application/json", "X-CSRFToken": readCookie("csrftoken") }
     });
     if (!meRes.ok) {
       throw new Error("Failed to fetch user after login");
@@ -105,22 +106,18 @@ export function AuthProvider({ children }) {
   }, []);
 
   const logout = useCallback(async () => {
-    const csrftoken = getCsrfTokenFromCookie();
-
     try {
       await fetch(LOGOUT_ENDPOINT, {
         method: "POST",
         credentials: "include",
-        headers: {
-          "X-CSRFToken": csrftoken,
-        },
+        headers: { "Content-Type": "application/json", "X-CSRFToken": readCookie("csrftoken") }
       });
     } catch (err) {
-      console.warn("Logout request failed (ignored):", err);
-    } finally {
-      setUser(null);
-      router.push("/login");
+      console.error("Logout failed:", err);         // let yourself see the error
+      return; 
     }
+    setUser(null);
+    router.push("/login");
   }, [router]);
 
   const value = useMemo(

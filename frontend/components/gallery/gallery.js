@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useAuth } from "../../contexts/AuthContext";
 import Link from "next/link";
 import { INTERFERENCE_JOBS_ENDPOINT } from "../../utils/api";
+import { readCookie } from "../../utils/cookies"; // Adjust the import path as needed
 
 export default function GalleryPage() {
   const { isLoggedIn } = useAuth();
@@ -27,6 +28,7 @@ export default function GalleryPage() {
     fetch(INTERFERENCE_JOBS_ENDPOINT, {
       method: "GET",
       credentials: "include",
+      headers: { "Content-Type": "application/json", "X-CSRFToken": readCookie("csrftoken") }
     })
       .then((res) => {
         if (res.status === 403) {
