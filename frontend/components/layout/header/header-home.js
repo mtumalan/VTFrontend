@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+/* components/header/HeaderHome.js */
 import Link from "next/link";
 import { useState } from "react";
 import useScroll from "../../../hooks/useScroll";
@@ -57,6 +57,14 @@ export default function HeaderHome() {
                       Gallery
                     </Link>
                   </li>
+                  {/* If you want to also show “My Uploads” in the mobile menu: */}
+                  {isLoggedIn && (
+                    <li>
+                      <Link href="/my-uploads" className="fugu--btn-link">
+                        My Uploads
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </div>
             </nav>
@@ -64,16 +72,43 @@ export default function HeaderHome() {
 
           <div className="header-btn header-btn-l1 ms-auto d-none d-xs-inline-flex">
             {!isLoggedIn ? (
-              <Link href="/login" className="fugu--btn fugu--menu-btn1">
-                Get Started
-              </Link>
+              <>
+                <Link
+                  href="/login"
+                  className="fugu--btn fugu--menu-btn1"
+                  style={{ marginRight: "12px" }}
+                >
+                  Log In
+                </Link>
+                <Link
+                  href="/register"
+                  className="fugu--btn fugu--menu-btn1"
+                  style={{ background: "#4e00ff", color: "#fff" }}
+                >
+                  Sign Up
+                </Link>
+              </>
             ) : (
               <div
-                style={{ display: "flex", alignItems: "center", gap: "12px" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                }}
               >
                 <span style={{ color: "#fff", fontWeight: 500 }}>
                   Hi, {user.username}
                 </span>
+
+                {/* My Uploads button/link */}
+                <Link
+                  href="/ai-chat"
+                  className="fugu--btn fugu--menu-btn1"
+                  style={{ padding: "8px 16px" }}
+                >
+                  Upload Image
+                </Link>
+
                 <button
                   onClick={logout}
                   className="fugu--btn fugu--menu-btn1"
