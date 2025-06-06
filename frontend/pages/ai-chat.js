@@ -1,47 +1,42 @@
 /* pages/ai-chat.jsx */
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 import { VISION_MODELS_URL, INTERFERENCE_JOBS_ENDPOINT } from "../utils/api";
 import { readCookie } from "../utils/cookies";
-import { useAuth } from "../contexts/AuthContext";
+
+/* hard-coded demo user */
+const USER_ID = 1;
 
 export default function AiChat() {
-  const router                = useRouter();
-  const { isLoggedIn, loading } = useAuth();   // ← include loading flag
+  const router = useRouter();
 
   /* fetched models */
-  const [models, setModels]   = useState([]);
-  const [modelsBusy, setMB]   = useState(true);
-  const [fetchErr, setFE]     = useState("");
+  const [models,     setModels]   = useState([]);
+  const [modelsBusy, setMB]       = useState(true);
+  const [fetchErr,   setFE]       = useState("");
 
   /* user inputs */
-  const [modelId, setModelId] = useState("");
-  const [file,    setFile]    = useState(null);
+  const [modelId, setModelId]     = useState("");
+  const [file,    setFile]        = useState(null);
 
   /* form feedback */
-  const [errMsg, setErr]      = useState("");
-  const [okMsg,  setOk]       = useState("");
+  const [errMsg, setErr]          = useState("");
+  const [okMsg,  setOk]           = useState("");
 
-  /* ─── redirect gate ─────────────────────────────────────────────── */
+  /* ─── fetch available models on mount ─────────────────────────── */
   useEffect(() => {
-    if (!loading && isLoggedIn === false) {
-      router.replace("/login");
-    }
-  }, [loading, isLoggedIn, router]);
-
-  /* ─── fetch models once auth finished ───────────────────────────── */
-  useEffect(() => {
-    if (loading || isLoggedIn !== true) return;      // wait for auth
-
     setMB(true);  setFE("");
 
-    fetch(VISION_MODELS_URL, {
+    /* If your API path is user-scoped, interpolate USER_ID here;
+       otherwise keep VISION_MODELS_URL as-is. */
+    const url = VISION_MODELS_URL.replace(":userId", USER_ID);
+
+    fetch(url, {
       credentials: "include",
       headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": readCookie("csrftoken"),
+        "Content-Type" : "application/json",
+        "X-CSRFToken"  : readCookie("csrftoken"),
       },
     })
       .then(r => r.json())
@@ -55,9 +50,9 @@ export default function AiChat() {
         setFE("Error loading models.");
       })
       .finally(() => setMB(false));
-  }, [loading, isLoggedIn]);
+  }, []);
 
-  /* ─── submit handler ────────────────────────────────────────────── */
+  /* ─── submit handler ──────────────────────────────────────────── */
   const handleSend = async () => {
     setErr(""); setOk("");
 
@@ -66,96 +61,140 @@ export default function AiChat() {
 
     const fd = new FormData();
     fd.append("vision_model", modelId);
-    fd.append("input_image", file);
+    fd.append("input_image",  file);
+    fd.append("user",         USER_ID);          // <-- hard-coded user
 
     try {
-      const r = await fetch(INTERFERENCE_JOBS_ENDPOINT, {
-        method : "POST",
-        credentials: "include",
-        headers : { "X-CSRFToken": readCookie("csrftoken") },
-        body    : fd,
-      });
+      const r = await fetch(
+        INTERFERENCE_JOBS_ENDPOINT.replace(":userId", USER_ID),
+        {
+          method : "POST",
+          credentials: "include",
+          headers : { "X-CSRFToken": readCookie("csrftoken") },
+          body    : fd,
+        }
+      );
 
       if (!r.ok) {
         let msg = `Error ${r.status}`;
-        try { const j = await r.json(); msg = j.detail || JSON.stringify(j); } catch {}
+        try {
+          const j = await r.json();
+          msg = j.detail || JSON.stringify(j);
+        } catch (_) {}
         throw new Error(msg);
       }
+
       setOk("Job submitted successfully!");
-      router.push("/my-uploads");  // redirect to uploads page
+      router.push("/my-uploads");
     } catch (e) {
       console.error(e);
       setErr(e.message || "Submission failed.");
     }
   };
 
-  /* ─── while auth is pending or redirecting, render nothing ─────── */
-  if (loading || isLoggedIn !== true) return null;
-
-  /* ─── UI ────────────────────────────────────────────────────────── */
+  /* ─── UI ──────────────────────────────────────────────────────── */
   return (
-    <div className="fugu--inner-section dark-version"
-         style={{ minHeight:"100vh", display:"flex" }}>
-      <div style={{
-        width:"100%", display:"flex", justifyContent:"center",
-        alignItems:"center" }}>
+    <div
+      className="fugu--inner-section dark-version"
+      style={{ minHeight: "100vh", display: "flex" }}
+    >
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <div className="col-lg-6">
-          <div className="fugu--contact-form wow fadeInUpX" data-wow-delay="0.15s">
-            <h3 style={{ color:"#fff", marginBottom:15 }}>Analyze your image</h3>
+          <div
+            className="fugu--contact-form wow fadeInUpX"
+            data-wow-delay="0.15s"
+          >
+            <h3 style={{ color: "#fff", marginBottom: 15 }}>
+              Analyze your image
+            </h3>
 
             {modelsBusy ? (
-              <p style={{ color:"#aaa" }}>Loading models…</p>
+              <p style={{ color: "#aaa" }}>Loading models…</p>
             ) : fetchErr ? (
-              <p style={{ color:"#ff5e6d" }}>{fetchErr}</p>
+              <p style={{ color: "#ff5e6d" }}>{fetchErr}</p>
             ) : (
-              <form onSubmit={e => e.preventDefault()}>
+              <form onSubmit={(e) => e.preventDefault()}>
                 {/* model selector */}
                 <div className="fugu--comment-field">
-                  <label htmlFor="model-select"
-                         style={{ color:"#fff", marginBottom:8, display:"block" }}>
+                  <label
+                    htmlFor="model-select"
+                    style={{ color: "#fff", marginBottom: 8, display: "block" }}
+                  >
                     Select a model
                   </label>
-                  <select id="model-select"
-                          value={modelId}
-                          onChange={e => setModelId(e.target.value)}
-                          className="form-control"
-                          style={{
-                            background:"#181828", color:"#fff", borderRadius:8,
-                            border:"1.5px solid #4f8cff", padding:12, fontSize:"1rem",
-                            marginBottom:16 }}>
-                    {models.map(m => (
-                      <option key={m.id} value={m.id}>{m.name}</option>
+                  <select
+                    id="model-select"
+                    value={modelId}
+                    onChange={(e) => setModelId(e.target.value)}
+                    className="form-control"
+                    style={{
+                      background: "#181828",
+                      color: "#fff",
+                      borderRadius: 8,
+                      border: "1.5px solid #4f8cff",
+                      padding: 12,
+                      fontSize: "1rem",
+                      marginBottom: 16,
+                    }}
+                  >
+                    {models.map((m) => (
+                      <option key={m.id} value={m.id}>
+                        {m.name}
+                      </option>
                     ))}
                   </select>
                 </div>
 
                 {/* file input */}
                 <div className="fugu--comment-field">
-                  <label htmlFor="file-upload"
-                         style={{ color:"#fff", marginBottom:8, display:"block" }}>
+                  <label
+                    htmlFor="file-upload"
+                    style={{ color: "#fff", marginBottom: 8, display: "block" }}
+                  >
                     Select file
                   </label>
-                  <input id="file-upload" type="file"
-                         onChange={e => setFile(e.target.files[0])}
-                         className="form-control"
-                         style={{
-                           background:"#181828", color:"#fff", borderRadius:8,
-                           border:"1.5px solid #4f8cff", padding:12, fontSize:"1rem" }} />
+                  <input
+                    id="file-upload"
+                    type="file"
+                    onChange={(e) => setFile(e.target.files[0])}
+                    className="form-control"
+                    style={{
+                      background: "#181828",
+                      color: "#fff",
+                      borderRadius: 8,
+                      border: "1.5px solid #4f8cff",
+                      padding: 12,
+                      fontSize: "1rem",
+                    }}
+                  />
                   {file && (
-                    <div style={{ color:"#aaa", fontSize:14, marginTop:8 }}>
+                    <div
+                      style={{ color: "#aaa", fontSize: 14, marginTop: 8 }}
+                    >
                       Selected: {file.name}
                     </div>
                   )}
                 </div>
 
                 {/* feedback */}
-                {errMsg && <p style={{ color:"#ff5e6d" }}>{errMsg}</p>}
-                {okMsg  && <p style={{ color:"#12e497" }}>{okMsg}</p>}
+                {errMsg && <p style={{ color: "#ff5e6d" }}>{errMsg}</p>}
+                {okMsg && <p style={{ color: "#12e497" }}>{okMsg}</p>}
 
                 {/* submit */}
-                <button type="button" onClick={handleSend}
-                        id="fugu--form-submit-btn" className="link-button"
-                        style={{ color:"#fff" }}>
+                <button
+                  type="button"
+                  onClick={handleSend}
+                  id="fugu--form-submit-btn"
+                  className="link-button"
+                  style={{ color: "#fff" }}
+                >
                   Enviar
                 </button>
               </form>
@@ -176,5 +215,5 @@ export default function AiChat() {
 }
 
 export async function getStaticProps() {
-  return { props: { header:"three", footer:"three" } };
+  return { props: { header: "three", footer: "three" } };
 }
