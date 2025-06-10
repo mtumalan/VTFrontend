@@ -24,11 +24,7 @@ export default function HeaderHome() {
         <nav className="navbar site-navbar">
           <div className="brand-logo">
             <Link href="/">
-              <img
-                src="/images/logo/logo-white.svg"
-                alt="Logo"
-                className="light-version-logo"
-              />
+              Cracks
             </Link>
           </div>
 

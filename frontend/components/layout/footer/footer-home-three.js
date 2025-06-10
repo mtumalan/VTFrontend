@@ -13,11 +13,6 @@ export default function FooterHomeThree() {
           {/* ------------------------- */}
           <div className="d-flex align-items-center mb-3 mb-md-0">
             {/* Replace with your actual logo path or just project name text */}
-            <img
-              src="/images/logo/logo-white.svg"
-              alt="Project Logo"
-              style={{ height: "40px", marginRight: "0px" }}
-            />
             <span className="h5 mb-0">VisionSeg</span>
           </div>
 

@@ -4,7 +4,6 @@ import Link from "next/link";
 export default function LogoSection() {
 	return (
 		<Link href="/">
-			<img src="/images/logo/logo-black.svg" alt="" />
 		</Link>
 	);
 }
