@@ -1,82 +1,93 @@
-# Cracks Frontend
+# VTFrontend
 
-Frontend web application built with Next.js. This project serves as the user interface for the Cracks service, featuring a modular component structure, reusable UI elements, and integration with backend APIs.
+A Next.js frontend for the VisionTransformer Platform, providing a user interface to upload images, track inference jobs, and visualize segmentation results.
+
+---
+
+## Overview
+
+This repository contains the frontend application for the VisionTransformer Platform. It allows users to:
+
+1. Authenticate and manage sessions.  
+2. Upload input images for inference.  
+3. View real-time job status and retrieve segmentation masks.  
+4. Browse past inference results in a gallery.
+
+---
 
 ## Features
 
-- Built with [Next.js](https://nextjs.org/)
-- Modular component architecture
-- Responsive design
-- Docker support for development and production
-- Custom hooks and utility functions
+- Built with **Next.js** and **React**  
+- **File upload** component with drag-and-drop support  
+- **Result gallery** with image previews and download links  
+- **Responsive design** for desktop and mobile  
+- **Environment-driven** API endpoints  
 
-## Project Structure
+---
 
-```text
-frontend/
-  components/      # Reusable UI components
-  hooks/           # Custom React hooks
-  pages/           # Next.js pages
-  public/          # Static assets (images, fonts, etc.)
-  styles/          # CSS and styling
-  utils/           # Utility functions
-  docker-compose.yml / Dockerfile  # Docker configuration
-```
+## Tech Stack
 
-## Getting Started
+- **Framework:** Next.js 13 (App Router)  
+- **Language:** Javascript
+- **Styling:** CSS Modules
+- **Bundler:** Webpack (built-in)  
+- **Containerization:** Docker & Docker Compose  
 
-### Prerequisites
+---
 
-- [Node.js](https://nodejs.org/) (v16 or higher recommended)
-- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-- [Docker](https://www.docker.com/)
+## Prerequisites
 
-### Installation
+- Node.js ≥ 18  
+- npm ≥ 8 or Yarn ≥ 1.22  
+- Docker & Docker Compose (optional, for containerized development)  
 
-1. Navigate to the `frontend` directory:
+---
 
-   ```sh
-   cd frontend
+## Installation & Development
+
+1. **Clone the repo**  
+   ```bash
+   git clone https://github.com/your-org/VTFrontend.git
+   cd VTFrontend
    ```
 
-2. Install dependencies:
-
-   ```sh
+2. **Install dependencies**  
+   ```bash
    npm install
    # or
    yarn install
    ```
 
-### Running the Development Server
+3. **Run in development mode**  
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+   The app will be available at [http://localhost:3000](http://localhost:3000).
 
-```sh
-npm run dev
-# or
-yarn dev
-```
+---
 
-Visit [http://localhost:3000](http://localhost:3000) to view the app.
+## Production & Deployment
 
-### Using Docker
+1. **Build the application**  
+   ```bash
+   npm run build
+   # or
+   yarn build
+   ```
 
-To run the app in a Docker container:
+2. **Start the production server**  
+   ```bash
+   npm start
+   # or
+   yarn start
+   ```
 
-```sh
-docker-compose up --build
-```
+3. **Dockerized**  
+   ```bash
+   docker-compose up --build -d
+   ```
+   This will build the Docker image and start the container on port 3000.
 
-## Building for Production
-
-```sh
-npm run build
-npm start
-```
-
-## Folder Overview
-
-- `components/` - UI components grouped by feature
-- `pages/` - Next.js routing and page components
-- `public/` - Static files
-- `styles/` - CSS and global styles
-- `utils/` - Helper functions and API utilities
-
+---
