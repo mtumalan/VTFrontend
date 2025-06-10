@@ -1,4 +1,4 @@
-export const API_BASE_URL = "http://127.0.0.1:8000/api";
+export const API_BASE_URL = "http://45.79.253.86:8000/api";
 export const VISION_MODELS_URL   = `${API_BASE_URL}/vision-models/`;
 export const LOGIN_ENDPOINT = `${API_BASE_URL}/users/login/`;
 export const REGISTER_ENDPOINT = `${API_BASE_URL}/users/register/`;
